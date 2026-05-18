@@ -1,0 +1,50 @@
+{
+  "records": [
+    {
+      "profile": "madvise_pageout_formal_refresh",
+      "source_file": "mm/madvise.c",
+      "entry_profile": "madvise_paths",
+      "test_kind": "workload",
+      "version_family": "6.12",
+      "exact_version": "6.12.77",
+      "subject_kind": "scenario",
+      "subject": "pageout_refault_anon_16m",
+      "run_count": 9,
+      "ok_runs": 9,
+      "failed_runs": 0,
+      "total_source_functions": 34,
+      "total_functions": 25,
+      "covered_functions_any": 9,
+      "covered_functions_all": 9,
+      "coverage_ratio_any": 0.36,
+      "coverage_ratio_all": 0.36,
+      "coverage_ratio_mean": 0.36,
+      "coverage_ratio_min": 0.36,
+      "coverage_ratio_max": 0.36,
+      "failure_reasons": ""
+    },
+    {
+      "profile": "madvise_pageout_formal_refresh",
+      "source_file": "mm/madvise.c",
+      "entry_profile": "madvise_paths",
+      "test_kind": "workload",
+      "version_family": "6.19",
+      "exact_version": "6.19.9",
+      "subject_kind": "scenario",
+      "subject": "pageout_refault_anon_16m",
+      "run_count": 9,
+      "ok_runs": 9,
+      "failed_runs": 0,
+      "total_source_functions": 68,
+      "total_functions": 56,
+      "covered_functions_any": 21,
+      "covered_functions_all": 21,
+      "coverage_ratio_any": 0.375,
+      "coverage_ratio_all": 0.375,
+      "coverage_ratio_mean": 0.375,
+      "coverage_ratio_min": 0.375,
+      "coverage_ratio_max": 0.375,
+      "failure_reasons": ""
+    }
+  ]
+}

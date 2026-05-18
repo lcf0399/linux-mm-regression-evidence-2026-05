@@ -1,0 +1,38 @@
+name = "madvise_pageout_formal_refresh"
+source_file = "mm/madvise.c"
+generate_from_version = "6.19"
+baseline_version = "6.19"
+compare_versions = ["6.19", "6.12"]
+tolerance = 0.05
+repetitions = 9
+max_cv = 0.10
+description = "9-repeat focused refresh for the current MADV_PAGEOUT anonymous refault old-faster signal under split validation and 1/2/4 CPU clean performance."
+
+[[entry]]
+kind = "workload"
+profile = "madvise_paths"
+binary_name = "mmreg_madvise_pageout_formal_refresh"
+scenarios = [
+  "pageout_refault_anon_16m",
+]
+metrics = [
+  "cycle_ns_per_page",
+  "ns_per_page",
+  "advise_ns_per_page",
+  "cycle_ns_avg",
+  "advise_ns_avg",
+]
+
+[entry.overrides.defaults]
+rounds = 4
+max_rounds = 256
+min_measure_ns = 1200000000
+batch_ops = 1
+touch_passes = 1
+warmup_rounds = 2
+disable_thp = false
+
+[[entry.overrides.scenario]]
+name = "pageout_refault_anon_16m"
+pattern = "pageout_refault_anon"
+mapping_kb = 16384
