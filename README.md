@@ -20,7 +20,8 @@ Both workloads were run through the same project experiment framework:
 - Source-calibrated workloads target concrete Linux `mm/*.c` paths and export per-page timing metrics.
 - Coverage and performance evidence were collected separately. Coverage runs only show direct function-entry hits; clean performance runs have coverage disabled.
 - Formal performance runs use interleaved version order to reduce host-drift bias.
-- The lab formal matrix uses `QEMU_SMP=1/2/4` with the same guest memory, kernel config family, and command-line policy across CPU counts.
+- The primary lab formal matrix uses `QEMU_SMP=1/2/4` with the same guest memory, kernel config family, and command-line policy across CPU counts.
+- Some follow-up checks include an extended lab matrix up to `QEMU_SMP=8/16` with larger guest memory, when explicitly documented in the workload directory. These extended rows are useful for scalability/context, but they are reported separately from the strict `1/2/4` same-memory formal matrix.
 - Separate release-level sanity checks were used to choose a broad reporting range, but they are not part of this compact public evidence bundle. No commit-level bisection has been completed yet.
 
 Primary timing metrics are lower-is-better:
@@ -45,8 +46,9 @@ The formal evidence uses the lab server as the primary timing environment:
 - Container/cgroup CPU set: `0,2,4,6,8,10,12,14`
 - Container/cgroup memory limit: `16106127360` bytes
 - QEMU: `qemu-system-x86_64 8.2.2`
-- Guest memory: `QEMU_MEM_MB=14336`
-- Guest CPUs: `QEMU_SMP=1/2/4`
+- Primary formal guest memory: `QEMU_MEM_MB=14336`
+- Primary formal guest CPUs: `QEMU_SMP=1/2/4`
+- Extended follow-up runs, when present: `QEMU_SMP=8` with larger memory such as `QEMU_MEM_MB=16384`, and `QEMU_SMP=16` with larger memory such as `QEMU_MEM_MB=32768`
 - Timing order: interleaved version order
 - Formal repetitions: 9
 - Performance timing: coverage disabled

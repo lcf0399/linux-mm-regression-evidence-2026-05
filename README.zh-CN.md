@@ -17,7 +17,8 @@
 - workload 由源码语义校准，目标是具体的 Linux `mm/*.c` 路径，并导出按页归一化的 timing metrics。
 - coverage 和 performance 分开收集。coverage 只用来证明直接函数入口命中；clean performance run 关闭 coverage。
 - 正式 performance run 使用 interleaved version order，降低 host drift 对版本差异的干扰。
-- lab formal matrix 使用 `QEMU_SMP=1/2/4`，在不同 CPU 数下保持相同 guest memory、kernel config 族和 cmdline 口径。
+- primary lab formal matrix 使用 `QEMU_SMP=1/2/4`，在不同 CPU 数下保持相同 guest memory、kernel config 族和 cmdline 口径。
+- 部分 follow-up 检查会在 workload 目录中单独标注 extended lab matrix，最高扩展到 `QEMU_SMP=8/16` 并使用更大的 guest memory。这些扩展行用于观察扩展性和补充上下文，但应和严格的 `1/2/4` 同内存 formal matrix 分开解释。
 - 单独做过 release-level sanity check，用来选择较宽的报告范围；这部分不是当前公开精简证据包的一部分。目前还没有做完 commit-level bisection。
 
 主要 timing metrics 都是越低越好：
@@ -42,8 +43,9 @@ formal 证据的精确逐次运行元数据保留在 `pipeline_run_env.json`、`
 - container/cgroup CPU set：`0,2,4,6,8,10,12,14`
 - container/cgroup memory limit：`16106127360` bytes
 - QEMU：`qemu-system-x86_64 8.2.2`
-- guest memory：`QEMU_MEM_MB=14336`
-- guest CPU：`QEMU_SMP=1/2/4`
+- primary formal guest memory：`QEMU_MEM_MB=14336`
+- primary formal guest CPU：`QEMU_SMP=1/2/4`
+- extended follow-up run 如存在：`QEMU_SMP=8` 可配更大内存，例如 `QEMU_MEM_MB=16384`；`QEMU_SMP=16` 可配更大内存，例如 `QEMU_MEM_MB=32768`
 - timing 顺序：interleaved version order
 - formal repetitions：9
 - performance timing：关闭 coverage
