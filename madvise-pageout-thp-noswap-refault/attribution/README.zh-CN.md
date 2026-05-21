@@ -24,18 +24,6 @@ summaries/
   lab-1cpu-20260520.zh-CN.md
   lab-1cpu-20260520.md
   lab-multicpu-followup-20260520.zh-CN.md
-runs/
-  local/
-    ftrace-local-20260519T*/
-  lab/
-    1cpu-20260520/
-      default/
-      hugepage/
-      nohugepage/
-      logs/
-    multicpu-20260520/
-      smp{2,4,8,16}_mem*_{default,hugepage,nohugepage}/
-      logs/
 scripts/
   run_madvise_ftrace_*.sh
 MOVED_PATHS.zh-CN.md
@@ -48,16 +36,19 @@ MOVED_PATHS.zh-CN.md
 2. `summaries/lab-multicpu-followup-20260520.zh-CN.md`
    - 说明 `2/4/8/16 CPU` 下同一结构仍成立。
 3. `summaries/local-ftrace-20260519.zh-CN.md`
-   - 记录本地探索如何逐步定位到 smaps/THP backing caveat。
+   - 记录 local ftrace/smaps attribution 如何定位到 smaps/THP backing caveat。
 4. `MOVED_PATHS.zh-CN.md`
-   - 如果旧文档或邮件草稿里还出现旧目录名，用这个文件查新位置。
+   - 记录历史 attribution 路径和当前整理后路径之间的对应关系。
 
 ## 证据边界
 
-- `runs/local/`：本地探索和 sanity check，只作为分析材料。
+- `runs/local/`：local attribution 和 sanity check，只作为分析材料。
 - `runs/lab/1cpu-20260520/`：lab 1CPU ftrace/smaps attribution。
 - `runs/lab/multicpu-20260520/`：lab 多 CPU ftrace/smaps attribution。
-- `scripts/`：归因 run 使用的启动脚本；后续如需重跑，从这里取入口。
+- `scripts/`：归因 run 使用的启动脚本；用于复现或扩展 attribution run。
+
+Raw attribution run 目录不属于精简公开证据包的核心材料；需要 follow-up debug
+时再按需提供具体 raw 目录。
 
 这批 attribution run 的时间数字来自 tracing kernel 短跑，只能用来解释路径。
 `cycle_ns_per_page` 是 workload iteration wall-clock ns/page，不是 CPU cycles。

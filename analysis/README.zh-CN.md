@@ -27,7 +27,7 @@ mprotect-shared-dirty-toggle/
     本地和 lab sanity 结果。
 
 - `upstream_submission_feedback.zh-CN.md`
-  - 首次上游提交的踩坑、maintainer 回复、以及后续提交方法修正。
+  - 首次上游提交过程中遇到的问题、maintainer 回复、以及后续提交方法修正。
   - 包含 SMTP/Webmail、maintainer 地址、synthetic workload、madvise no-swap 语义修正等经验。
   - 记录 madvise follow-up 中对 no-swap/page-state 语义的修正，以及 mprotect follow-up 中对 `mm-unstable` 和 state-shape audit 的补充。
 

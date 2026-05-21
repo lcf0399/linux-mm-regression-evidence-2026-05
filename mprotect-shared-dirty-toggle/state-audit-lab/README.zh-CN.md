@@ -43,9 +43,9 @@ summary-20260520.zh-CN.md
 protect 前后 16384 个 present pages、`AnonHugePages=0`、kernel/MMU page
 size 都是 4 KiB、`THPeligible=0`。
 
-如果这轮显示三版在 smaps/pagemap/VMA/semantic success 上一致，就可以更放心地说：
-`mprotect` 与 `madvise` 不同，目前不是“两个版本实际页状态不同”的问题，而是同一
-用户态 mapping/workflow 在新版内部 `change_pte_range()` 路径中开销不同。
+这支持把 mprotect 对比解释为 same-state shared-dirty 4 KiB PTE workload
+comparison。与已修正口径后的 `madvise` 情况不同，当前 state audit 没有显示
+“不同内核实际页状态不同”的 caveat。
 
-完整 raw runner 目录和 launch logs 默认只保留在本地，并通过 ignore 规则排除在
-精简公开证据包之外；后续只有在 debug 需要时再单独整理。
+完整 raw runner 目录和 launch logs 通过 `.gitignore` 排除在精简公开证据包之外；
+如果 follow-up debugging 需要，可以再单独提供。

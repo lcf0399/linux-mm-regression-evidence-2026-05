@@ -8,9 +8,9 @@ small-folio `mprotect()` optimization series. That patchset is directly
 relevant to the earlier `nr_ptes == 1` hypothesis for the shared-dirty PTE
 toggle workload.
 
-This is not formal lab evidence. The lab server was unavailable when this was
-collected, and local `mprotect` timing is noisier than the lab matrix. Treat
-these files as follow-up analysis material only.
+This is not formal lab evidence. Local `mprotect` timing is noisier than the
+lab matrix, so these files should be treated as follow-up analysis material
+only.
 
 ## Layout
 
@@ -26,11 +26,11 @@ The local sanity check suggests that the `mm-unstable` optimization reduces the
 synthetic shared-dirty signal relative to `v6.19.9`, but does not bring the
 numbers back to `v6.12.77`.
 
-Because this run is local and noisy, it should be described as:
+Because this run is local and noisy, the appropriate public interpretation is:
 
 ```text
 Pedro's small-folio mprotect optimization is directly relevant to the
-nr_ptes == 1 hypothesis. In my local sanity check it reduces the synthetic
-shared-dirty signal, but does not remove it. The local run is noisy, so I would
-not present it as formal evidence until the lab matrix can be rerun.
+nr_ptes == 1 hypothesis. In this local sanity check it reduces the synthetic
+shared-dirty signal, but does not remove it. The local run is noisy, so it is
+follow-up analysis material rather than formal lab evidence.
 ```

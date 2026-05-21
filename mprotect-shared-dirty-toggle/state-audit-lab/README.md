@@ -47,5 +47,5 @@ the protection cycle, `AnonHugePages=0`, 4 KiB kernel/MMU page size, and
 
 This supports treating the mprotect comparison as a same-state shared-dirty
 4 KiB PTE workload comparison. Raw runner directories and launch logs are
-kept local by default and are ignored from the compact public evidence bundle
-unless they are explicitly needed for follow-up debugging.
+excluded from the compact public evidence bundle by `.gitignore`; they can be
+provided separately if they are needed for follow-up debugging.

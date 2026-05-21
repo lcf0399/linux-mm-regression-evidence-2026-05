@@ -25,16 +25,12 @@ summaries/
   lab-1cpu-20260520.zh-CN.md
   lab-multicpu-followup-20260520.zh-CN.md
   local-ftrace-20260519.zh-CN.md
-runs/
-  local/
-    ftrace-local-20260519T*/
-  lab/
-    1cpu-20260520/
-    multicpu-20260520/
 scripts/
   run_madvise_ftrace_*.sh
 MOVED_PATHS.zh-CN.md
 ```
 
-Start from `summaries/lab-1cpu-20260520.zh-CN.md` and then
-`summaries/lab-multicpu-followup-20260520.zh-CN.md`.
+For current attribution, start from `summaries/lab-1cpu-20260520.zh-CN.md`
+and then `summaries/lab-multicpu-followup-20260520.zh-CN.md`.
+Raw attribution run directories are excluded from the compact public bundle
+unless they are needed for follow-up debugging.

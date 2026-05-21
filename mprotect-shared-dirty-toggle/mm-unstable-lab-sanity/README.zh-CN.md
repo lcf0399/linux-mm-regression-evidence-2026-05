@@ -1,7 +1,7 @@
 # mprotect mm-unstable lab sanity - 2026-05-20
 
-这轮实验用于回应 David 指出的 Pedro `mprotect` small-folio optimization
-是否已经缓解我们报告中的 shared-dirty PTE toggle synthetic signal。
+这轮实验用于检查 David 指出的 Pedro `mprotect` small-folio optimization
+是否已经缓解 shared-dirty PTE toggle synthetic signal。
 
 它不是原始上游报告的 formal refresh 替代品，而是一个后续 sanity check：
 
@@ -64,6 +64,6 @@ PTE toggle signal 是有帮助的；在 lab 上，mm-unstable 相比 v6.19.9 快
 
 ```text
 I tested current mm-unstable with Pedro's optimization. It reduces the
-synthetic shared-dirty signal in my lab matrix, but does not remove the
+synthetic shared-dirty signal in this lab matrix, but does not remove the
 gap to v6.12 in this workload.
 ```
