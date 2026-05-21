@@ -55,97 +55,35 @@ The formal evidence uses the lab server as the primary timing environment:
 
 The exact per-run environment remains in `pipeline_run_env.json`; this section is a compact summary.
 
-## Current Attribution
+## Workload Status
 
-The attribution notes below are mechanism interpretation. The formal performance claims still rely on the clean timing runs with coverage/probe instrumentation disabled.
+The workload directories are the source of truth for per-workload tables,
+profiles, and follow-up summaries. This section only records the current public
+scope.
 
-### MADV_PAGEOUT / THP / No-swap Reclaim Failure
+- `madvise-pageout-thp-noswap-refault/`
+  - Original lab timing showed `v6.19.9` slower than `v6.12.77` on the
+    `1/2/4 CPU` matrix.
+  - Follow-up ftrace/smaps checks now cover `1/2/4 CPU` at 14336 MiB, `8 CPU`
+    at 16384 MiB, and `16 CPU` at 32768 MiB.
+  - The follow-up found a page-state caveat: default/hugepage runs were not a
+    same-actual-THP-state comparison between `v6.12.77` and `v6.19.9`.
+  - Current scope: not a proven real pageout/refault regression and not a
+    same-state THP regression; best treated as a narrower no-swap
+    `MADV_PAGEOUT` anon/THP reclaim split/failure-path observation.
 
-The current interpretation is not a generic `madvise()` slowdown and not a generic `MADV_PAGEOUT` slowdown.
+- `mprotect-shared-dirty-toggle/`
+  - Original lab timing showed `v6.19.9` slower than `v6.12.77` on the
+    shared-dirty PTE toggle workload.
+  - `akpm/mm mm-unstable 444fc9435e57` partially mitigates the signal in the
+    lab `1/2/4/8/16 CPU` matrix, but does not restore `v6.12.77`-level timing.
+  - State-shape audit found the successful `v6.12.77`, `v6.19.9`, and
+    `mm-unstable` runs use the same 4 KiB shared-dirty PTE mapping shape.
+  - Current scope: a synthetic/source-calibrated shared-dirty PTE `mprotect()`
+    workload, not a generic `mprotect()` regression claim.
 
-The regression is scoped to this workflow:
-
-1. map 16 MiB anonymous memory
-2. let the mapping use the default THP path
-3. run `madvise(MADV_PAGEOUT)` in a guest with no configured swap
-4. write-touch the mapping as the second half of the workload iteration
-
-Upstream feedback correctly pointed out that with no swap configured, this should not be described as a real pageout/refault case. A more accurate description is a `MADV_PAGEOUT` anon/THP no-swap reclaim/swap-allocation-failure path; the later write-touch is part of the workload iteration.
-
-The timing split points to the `MADV_PAGEOUT` / reclaim part. Coverage and follow-up path validation point to the same reclaim/swap-failure chain:
-
-```text
-madvise(MADV_PAGEOUT)
-  -> reclaim_pages()
-  -> shrink_folio_list()
-  -> folio_alloc_swap()
-  -> swap allocation failure path
-```
-
-Several local and lab ftrace/smaps attribution runs were added after upstream
-feedback. The public repository keeps the attribution summaries and scripts
-under:
-
-```text
-madvise-pageout-thp-noswap-refault/attribution/summaries/local-ftrace-20260519.zh-CN.md
-madvise-pageout-thp-noswap-refault/attribution/summaries/lab-1cpu-20260520.zh-CN.md
-madvise-pageout-thp-noswap-refault/attribution/summaries/lab-multicpu-followup-20260520.zh-CN.md
-madvise-pageout-thp-noswap-refault/attribution/scripts/
-```
-
-These attribution reruns are not clean timing evidence. The summaries report
-that the additional `v6.19.9` time is concentrated under `reclaim_pages()` /
-`shrink_folio_list()`, and that `split_folio_to_list()` appears in THP-backed
-short runs. Bulky raw trace/log directories are not part of the compact public
-bundle unless specifically requested for follow-up debugging.
-
-The more important new caveat is page state: local and lab smaps show that in the
-default-THP and explicit `thp=hugepage` runs, `v6.12.77` actually had
-`AnonHugePages=0 kB`, while `v6.19.9` had `AnonHugePages=16384 kB`. In the
-explicit `thp=nohugepage` same-state control, neither kernel hit
-`split_folio_to_list()` and the local short run no longer showed an
-old-version-faster signal.
-
-The current interpretation is therefore narrower: the signal is strongly tied
-to actual THP backing and the no-swap reclaim split/failure path. The current
-follow-up position is to treat the original same-state regression framing as
-too broad and, if useful to maintainers, discuss the no-swap THP split/failure
-path as a narrower optimization topic.
-
-Separate release-level sanity checks showed `v6.18.19` already in the slow range, but the exact culprit commit is not bisected.
-
-### mprotect Shared-dirty Toggle
-
-The current mechanism hypothesis is more localized here.
-
-The workload repeatedly toggles protection over a shared dirty 64 MiB mapping. The strongest attribution points to the v6.19 `change_pte_range()` batching rewrite:
-
-```text
-change_pte_range()
-  -> mprotect_folio_pte_batch()
-  -> modify_prot_start_ptes()
-  -> set_write_prot_commit_flush_ptes()
-  -> prot_commit_flush_ptes()
-```
-
-For this shared-dirty workload, the measured path does not form an effective large PTE batch. Batch-probe attribution showed `nr_ptes=1` for the shared-dirty path. That means the extra folio lookup, batch-size query, helper dispatch, and batch commit machinery are paid per 4 KiB PTE, but there is no batch-size amortization.
-
-After upstream feedback, two follow-up checks were added:
-
-- `mm-unstable-lab-sanity/`: current akpm/mm `mm-unstable` commit
-  `444fc9435e57` partially mitigates the synthetic shared-dirty signal
-  versus `v6.19.9` by about 6.6-13.5% in the lab CPU/memory matrix, closing
-  about 18-37% of the `v6.12.77 -> v6.19.9` gap, but it does not restore
-  `v6.12.77`-level timing in this workload.
-- `state-audit-lab/`: a state-shape audit across `v6.12.77`, `v6.19.9`, and
-  `mm-unstable` found the successful runs all use the same 4 KiB shared-dirty
-  PTE mapping shape: 16384 present pages before/after, no THP backing, one
-  final VMA, and no semantic mismatches. This supports treating mprotect as a
-  same-state comparison, unlike the corrected `MADV_PAGEOUT` follow-up.
-
-This also explains why the result should not be generalized to all `mprotect()` users. Anonymous THP-oriented `mprotect()` paths can go through huge-PMD/THP handling and do not show the same behavior in the same test suite. The regression claim is therefore scoped to the shared dirty PTE toggle path.
-
-Separate release-level sanity checks showed `v6.18.19` already in the slow range, but the exact culprit commit is not bisected.
+No culprit commit has been bisected for either workload. Separate release-level
+sanity checks showed `v6.18.19` already in the slow range for both reports.
 
 ## Data Selection Policy
 
@@ -154,7 +92,11 @@ The formal workload directories include the latest citable evidence bundle for t
 - latest lab formal refresh results for the main performance claims
 - separate coverage evidence where useful, kept distinct from clean performance timing
 
-Older screenings, release-level sanity runs, invalid runs, failed runs, instrumentation-contaminated runs, and exploratory intermediate outputs are kept out of the minimal public evidence bundle by default. The `analysis/` directory contains supplementary notes and should not be treated as a replacement for the formal workload evidence.
+Older screenings, release-level sanity runs, invalid runs, failed runs,
+instrumentation-contaminated runs, and exploratory intermediate outputs are
+kept out of the minimal public evidence bundle by default. The `analysis/`
+directory contains supplementary notes and should not replace the workload
+directories.
 
 ## Main Caveats
 
@@ -162,6 +104,8 @@ The reports are not claiming generic `madvise()` or generic `mprotect()` regress
 
 The `MADV_PAGEOUT` claim is scoped to an anonymous THP/no-swap `MADV_PAGEOUT` reclaim-failure + write-touch iteration workflow; a real pageout/refault has not been established. The new local + lab attribution shows this is not a same-actual-THP-state comparison.
 
-The `mprotect()` claim is scoped to the shared dirty full-range protection-toggle workload; the cleanest current formal result is the 1CPU lab run, while 2CPU and 4CPU are same-direction supporting evidence with reliability caveats.
-
-No culprit commit has been bisected yet. The proposed reporting range remains `v6.12..v6.18` based on separate release-level sanity checks.
+The `mprotect()` claim is scoped to the shared dirty full-range
+protection-toggle workload; the cleanest original formal result is the 1CPU lab
+run, while 2CPU and 4CPU are same-direction supporting evidence with
+reliability caveats. The later 8/16 CPU rows are extended follow-up context, not
+part of the strict same-memory primary formal matrix.

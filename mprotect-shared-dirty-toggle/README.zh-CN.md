@@ -60,10 +60,6 @@ cost，而不是 workload-state mismatch comparison。
 - `experiments/`：formal experiment profile。
 - `formal-lab/perf_{1,2,4}cpu/`：coverage disabled 的 performance run。
 - `formal-lab/coverage_1cpu/`：与 clean timing 分开收集的 direct-hit coverage 证据。
-- `mm-unstable-local-sanity/`：针对 akpm/mm `mm-unstable` commit `444fc9435e57`
-  的 local sanity check；它是 small-folio mprotect optimization 讨论的 follow-up context，
-  不是 formal lab evidence。
-- `mm-unstable-lab-sanity/`：针对同一个 `mm-unstable` commit 的 lab sanity matrix；
-  它显示相对 v6.19 有部分缓解，但没有回到 v6.12-level timing。
-- `state-audit-lab/`：shared-dirty mapping 的 lab state-shape audit；它不是 timing evidence，
-  但支持 same-state comparison assumption。
+- `mm-unstable-lab-sanity/`：small-folio optimization 讨论使用的 lab follow-up matrix。
+- `state-audit-lab/`：支持 same-state comparison assumption 的 lab state-shape audit。
+- `mm-unstable-local-sanity/`：仅作本地 follow-up context。

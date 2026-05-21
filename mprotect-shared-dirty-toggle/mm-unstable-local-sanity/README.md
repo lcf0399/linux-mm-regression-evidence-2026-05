@@ -1,36 +1,13 @@
-# mprotect mm-unstable Local Sanity Check
+# mprotect mm-unstable Local Sanity
 
-This directory records a local sanity check against akpm/mm `mm-unstable`
+This directory records a local sanity check against `akpm/mm mm-unstable`
 commit `444fc9435e57157fcf30fc99aee44997f3458641`.
 
-It exists because upstream feedback pointed to Pedro Falcato's recent
-small-folio `mprotect()` optimization series. That patchset is directly
-relevant to the earlier `nr_ptes == 1` hypothesis for the shared-dirty PTE
-toggle workload.
-
-This is not formal lab evidence. Local `mprotect` timing is noisier than the
-lab matrix, so these files should be treated as follow-up analysis material
-only.
+It is follow-up analysis material only. Local `mprotect` timing is noisier than
+the lab matrix, and the lab result in `../mm-unstable-lab-sanity/` is the better
+reference for upstream discussion.
 
 ## Layout
 
-- `experiments/`: the local profile and kernel-version mapping used for this
-  sanity check.
-- `local_1cpu/`: local clean timing result with `QEMU_SMP=1`.
-- `local_2cpu/`: local clean timing result with `QEMU_SMP=2`.
-- `local_4cpu/`: local clean timing result with `QEMU_SMP=4`.
-
-## Current Reading
-
-The local sanity check suggests that the `mm-unstable` optimization reduces the
-synthetic shared-dirty signal relative to `v6.19.9`, but does not bring the
-numbers back to `v6.12.77`.
-
-Because this run is local and noisy, the appropriate public interpretation is:
-
-```text
-Pedro's small-folio mprotect optimization is directly relevant to the
-nr_ptes == 1 hypothesis. In this local sanity check it reduces the synthetic
-shared-dirty signal, but does not remove it. The local run is noisy, so it is
-follow-up analysis material rather than formal lab evidence.
-```
+- `experiments/`: local profile and kernel-version mapping.
+- `local_{1,2,4}cpu/`: local clean timing results.

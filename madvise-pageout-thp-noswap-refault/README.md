@@ -23,7 +23,7 @@ This is a userspace-visible `madvise(MADV_PAGEOUT)` workload:
 
 It does not claim that all `MADV_PAGEOUT` workloads regress.
 
-## Key result
+## Formal Timing Result
 
 Formal lab timing shows `v6.19.9` slower than `v6.12.77` across `1/2/4` vCPUs.
 After upstream review, the important caveat is that these formal timing runs
@@ -53,15 +53,34 @@ iteration. It is not a CPU-cycle counter.
 
 Separate release-level sanity checks showed `v6.18.19` already in the slow range, but those raw runs are kept out of this compact public evidence bundle.
 
+## Follow-up Attribution Result
+
+The lab ftrace/smaps follow-up covers:
+
+- `QEMU_SMP=1/2/4` with `QEMU_MEM_MB=14336`
+- `QEMU_SMP=8` with `QEMU_MEM_MB=16384`
+- `QEMU_SMP=16` with `QEMU_MEM_MB=32768`
+- THP modes: `default`, `hugepage`, `nohugepage`
+
+This follow-up is attribution evidence, not clean timing evidence. It found
+the same page-state pattern across the extended matrix:
+
+- In `default` and `hugepage` modes, `v6.12.77` has `AnonHugePages=0 kB`,
+  while `v6.19.9` has `AnonHugePages=16384 kB`.
+- In those THP-backed `v6.19.9` runs, `split_folio_to_list()` is hit; it is
+  not hit on `v6.12.77`.
+- In `nohugepage` mode, both kernels have `AnonHugePages=0 kB`, neither hits
+  `split_folio_to_list()`, and the old-version-faster signal is not stable.
+
+Current interpretation: the original timing signal should not be presented as
+a same-state THP regression. It is better described as a no-swap
+`MADV_PAGEOUT` anon/THP reclaim split/failure-path observation. The detailed
+attribution summary is in `attribution/summaries/`.
+
 ## Directories
 
 - `workload/`: standalone workload source and helper script.
 - `experiments/`: formal experiment profile.
 - `formal-lab/perf_{1,2,4}cpu/`: clean performance runs with coverage disabled.
 - `formal-lab/coverage_1cpu/`: direct-hit coverage evidence collected separately from clean timing.
-- `attribution/`: local and lab ftrace/smaps follow-up for the upstream request for
-  path breakdown. The current local result points at `reclaim_pages()` /
-  `shrink_folio_list()` and repeated `split_folio_to_list()` hits on
-  `v6.19.9`, but also shows a critical caveat: local `v6.12.77` often has
-  `AnonHugePages=0 kB` while `v6.19.9` is THP-backed. It is attribution
-  evidence only, not clean timing evidence.
+- `attribution/`: ftrace/smaps attribution summaries and scripts.

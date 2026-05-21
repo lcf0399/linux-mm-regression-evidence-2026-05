@@ -52,90 +52,32 @@ formal 证据的精确逐次运行元数据保留在 `pipeline_run_env.json`、`
 
 精确的逐次运行环境仍以 `pipeline_run_env.json` 为准；这里是简要摘要。
 
-## 当前归因状态
+## Workload 当前状态
 
-下面的归因内容是机制解释。正式性能结论仍以关闭 coverage/probe instrumentation 的 clean timing runs 为准。
+各 workload 目录是表格、profile 和 follow-up summary 的权威入口。这里仅记录当前公开口径。
 
-### MADV_PAGEOUT / THP / no-swap reclaim failure
+- `madvise-pageout-thp-noswap-refault/`
+  - 原始 lab timing 显示，在 `1/2/4 CPU` 矩阵上 `v6.19.9` 慢于 `v6.12.77`。
+  - 后续 ftrace/smaps 覆盖了 14336 MiB 下的 `1/2/4 CPU`、16384 MiB 下的
+    `8 CPU`、32768 MiB 下的 `16 CPU`。
+  - follow-up 发现页面状态限制：default/hugepage run 不是
+    `v6.12.77` 和 `v6.19.9` 之间实际 THP 状态一致的对比。
+  - 当前口径：不能声称已经证明真实 pageout/refault regression，也不能声称
+    same-state THP regression；更适合作为 no-swap `MADV_PAGEOUT`
+    anon/THP reclaim split/failure-path observation。
 
-当前解释不是泛化的 `madvise()` 变慢，也不是泛化的 `MADV_PAGEOUT` 变慢。
+- `mprotect-shared-dirty-toggle/`
+  - 原始 lab timing 显示，shared-dirty PTE toggle workload 上 `v6.19.9`
+    慢于 `v6.12.77`。
+  - `akpm/mm mm-unstable 444fc9435e57` 在 lab `1/2/4/8/16 CPU` 矩阵中
+    部分缓解该信号，但没有恢复到 `v6.12.77` 水平。
+  - state-shape audit 显示，成功的 `v6.12.77`、`v6.19.9` 和
+    `mm-unstable` run 都是同一种 4 KiB shared-dirty PTE mapping 状态。
+  - 当前口径：这是由源码路径校准的 synthetic shared-dirty PTE
+    `mprotect()` workload，不是泛化的 `mprotect()` regression claim。
 
-回归结论限定在这个 workflow：
-
-1. 映射 16 MiB anonymous memory
-2. 让 mapping 使用默认 THP 路径
-3. 在 guest 无 swap 的情况下执行 `madvise(MADV_PAGEOUT)`
-4. 再 write-touch 这段 mapping，作为 workload iteration 的后半段
-
-maintainer 已指出：在无 swap 条件下，匿名页没有地方被真正 page out，因此不应把这个场景表述成真实 pageout/refault。更准确的语义是 `MADV_PAGEOUT` 触发 anon/THP no-swap reclaim/swap-allocation-failure path；后续 write-touch 只是 workload iteration 的一部分。
-
-timing split 显示主要时间差在 `MADV_PAGEOUT` / reclaim 段。coverage 和后续路径验证都指向同一条 reclaim/swap-failure 链：
-
-```text
-madvise(MADV_PAGEOUT)
-  -> reclaim_pages()
-  -> shrink_folio_list()
-  -> folio_alloc_swap()
-  -> swap allocation failure path
-```
-
-收到上游反馈后，又补了几轮 local 和 lab ftrace/smaps attribution。公开仓库保留的是归因摘要和脚本：
-
-```text
-madvise-pageout-thp-noswap-refault/attribution/summaries/local-ftrace-20260519.zh-CN.md
-madvise-pageout-thp-noswap-refault/attribution/summaries/lab-1cpu-20260520.zh-CN.md
-madvise-pageout-thp-noswap-refault/attribution/summaries/lab-multicpu-followup-20260520.zh-CN.md
-madvise-pageout-thp-noswap-refault/attribution/scripts/
-```
-
-这些 attribution rerun 不是 clean timing 证据。摘要显示 `v6.19.9` 的额外时间集中在
-`reclaim_pages()` / `shrink_folio_list()`，且 `split_folio_to_list()` 会在
-THP-backed 短跑中出现。体积较大的 raw trace/log 目录不放入当前精简公开证据包；如果后续维护者需要，可再单独提供。
-
-更重要的新 caveat 是：本地和 lab smaps 都显示 default THP 和显式 `thp=hugepage` 请求下，
-`v6.12.77` 的 mapping 实际都是 `AnonHugePages=0 kB`，而 `v6.19.9` 是
-`AnonHugePages=16384 kB`。在显式 `thp=nohugepage` 的同状态对照中，两边都没有
-THP backing，也没有 hit `split_folio_to_list()`，并且本地短跑不再显示
-old-version-faster 信号。
-
-因此当前关键边界需要再收紧：这个现象和实际 THP backing 状态以及 no-swap reclaim
-里的 split/failure path 强相关。当前后续口径是：原始 same-state regression
-表述过宽；如果维护者认为有价值，可把 no-swap THP split/failure path 作为更窄的优化问题继续讨论。
-
-单独做过的 release-level sanity check 显示 `v6.18.19` 已进入慢路径，但目前还没有 bisect 到具体 culprit commit。
-
-### mprotect shared-dirty toggle
-
-这条的机制假设更局部。
-
-workload 对 shared dirty 64 MiB mapping 反复做 protection toggle。最强归因指向 v6.19 的 `change_pte_range()` 批处理重写：
-
-```text
-change_pte_range()
-  -> mprotect_folio_pte_batch()
-  -> modify_prot_start_ptes()
-  -> set_write_prot_commit_flush_ptes()
-  -> prot_commit_flush_ptes()
-```
-
-对这个 shared-dirty workload，实测路径无法形成有效的大 PTE batch。batch-probe attribution 显示 shared-dirty 路径上的 `nr_ptes=1`。这意味着额外的 folio lookup、batch-size query、helper dispatch 和 batch commit machinery 都按每个 4 KiB PTE 付费，但没有 batch-size amortization。
-
-收到上游反馈后，又补了两类检查：
-
-- `mm-unstable-lab-sanity/`：当前 akpm/mm `mm-unstable` commit
-  `444fc9435e57` 在 lab CPU/memory 矩阵中相对 `v6.19.9` 部分缓解了这个
-  synthetic shared-dirty signal，快约 6.6-13.5%，大约关闭了
-  `v6.12.77 -> v6.19.9` 差距的 18-37%，但没有把这个 workload 拉回
-  `v6.12.77` 水平。
-- `state-audit-lab/`：对 `v6.12.77`、`v6.19.9` 和 `mm-unstable` 做的
-  state-shape audit 显示，成功 run 都是同一种 4 KiB shared-dirty PTE
-  mapping 状态：protect 前后 16384 个 present pages、无 THP backing、
-  最终 1 个 VMA、没有 semantic mismatch。这支持把 mprotect 这条看作
-  same-state comparison，和已修正口径后的 `MADV_PAGEOUT` 情况不同。
-
-这也解释了为什么不能把结果泛化到所有 `mprotect()` 用户。同一测试套件里的 anonymous THP-oriented `mprotect()` 路径可以进入 huge-PMD/THP handling，并不表现出同样行为。因此回归结论应限定在 shared dirty PTE toggle path。
-
-单独做过的 release-level sanity check 显示 `v6.18.19` 已进入慢路径，但目前还没有 bisect 到具体 culprit commit。
+两个 workload 都还没有 bisect 到具体 culprit commit。单独的 release-level sanity
+check 显示两者在 `v6.18.19` 已进入慢区间。
 
 ## 数据取舍策略
 
@@ -144,7 +86,9 @@ change_pte_range()
 - 用于主要性能结论的最新 lab formal refresh 结果
 - 必要的 coverage 证据，但和 clean performance timing 分开保存
 
-旧 screening、release-level sanity run、无效 run、失败 run、被 instrumentation 污染的 run、探索性中间产物，默认不进入公开最小证据包。`analysis/` 目录只提供补充说明，不能替代正式 workload 证据。
+旧 screening、release-level sanity run、无效 run、失败 run、被 instrumentation
+污染的 run、探索性中间产物，默认不进入公开最小证据包。`analysis/` 目录只提供补充说明，
+不能替代正式 workload 证据。
 
 ## 主要限制条件
 
@@ -152,6 +96,7 @@ change_pte_range()
 
 `MADV_PAGEOUT` 的结论只限定在匿名 THP、guest 无 swap、`MADV_PAGEOUT` reclaim-failure + write-touch iteration 工作流上；当前不应声称真实 pageout/refault 已被证明。新的 local + lab attribution 表明：这不是一组 actual THP backing 一致的 same-state 对比。
 
-`mprotect()` 的结论只限定在 shared dirty full-range protection-toggle workload 上；当前最干净的 formal 结果是 lab 1CPU run，2CPU 和 4CPU 是同方向的补充证据，但带有可靠性限制。
-
-目前还没有 bisect 到具体 culprit commit。基于单独的 release-level sanity check，建议报告范围仍写成 `v6.12..v6.18`。
+`mprotect()` 的结论只限定在 shared dirty full-range protection-toggle workload 上；
+原始 formal 结果里最干净的是 lab 1CPU run，2CPU 和 4CPU 是同方向补充证据但带有
+可靠性限制。后续 8/16 CPU 行是 extended follow-up context，不属于严格同内存的
+primary formal matrix。
