@@ -23,13 +23,11 @@ mprotect-shared-dirty-toggle/
   - Pedro small-folio `mprotect()` optimization 与 shared-dirty
     `nr_ptes == 1` 假设之间的技术关系分析。
 
-- `run_lab_followup_20260520_madvise_mprotect.sh`
-  - 2026-05-20 follow-up run 使用的 lab orchestration helper。
-
 ## 边界
 
 - `madvise` 当前不应表述为已证明的真实 pageout/refault regression，也不应表述为
   same-state THP regression。
 - `mprotect` 当前是 synthetic/source-calibrated shared-dirty PTE workload，
   不是泛化的 `mprotect()` regression claim。
-- 上游提交流程复盘属于私有方法笔记，保存在公开 evidence 仓库之外。
+- 上游提交流程复盘、实验编排脚本和 launch log 属于私有方法/运行笔记，保存在公开
+  evidence 仓库之外。

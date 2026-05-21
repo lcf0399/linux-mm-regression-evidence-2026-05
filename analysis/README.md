@@ -25,14 +25,11 @@ mprotect-shared-dirty-toggle/
   - Technical analysis of Pedro's small-folio `mprotect()` optimization and
     how it relates to the shared-dirty `nr_ptes == 1` hypothesis.
 
-- `run_lab_followup_20260520_madvise_mprotect.sh`
-  - Lab orchestration helper used for the 2026-05-20 follow-up runs.
-
 ## Boundaries
 
 - The `madvise` current scope is not a proven real pageout/refault regression
   and not a same-state THP regression.
 - The `mprotect` current scope is a synthetic/source-calibrated shared-dirty
   PTE workload, not a generic `mprotect()` regression claim.
-- Private upstream-submission process notes are kept outside this public
-  evidence repository.
+- Private upstream-submission process notes, orchestration scripts, and launch
+  logs are kept outside this public evidence repository.
