@@ -27,6 +27,32 @@ commit 444fc9435e57157fcf30fc99aee44997f3458641
 version label 7.1.0-rc3-mm-unstable-444fc9435e57
 ```
 
+## patchset 结构和后续回帖
+
+Pedro v3 是一个 `0/2` cover letter 加两个实际 patch 的 series：
+
+- `1/2`：`mm/mprotect: move softleaf code out of the main function`
+  - 把 non-present / softleaf PTE 处理逻辑从 `change_pte_range()` 中拆到
+    `change_softleaf_pte()`。
+  - 目的主要是缩小 `change_pte_range()` 的主体，降低阅读和编译优化压力。
+  - 这个 patch 带有 Lorenzo 的 Reviewed-by、David 的 Acked-by 和 Luke 的
+    Tested-by。
+
+- `2/2`：原标题是 `mm/mprotect: special-case small folios when applying write
+  permissions`，后续 Pedro 发现标题不够准确，请 Andrew 改成
+  `mm/mprotect: special-case small folios when applying permissions`。
+  - 这是和我们 workload 最直接相关的一部分。
+  - 它把 present-PTE 修改逻辑抽到 `change_present_ptes()`。
+  - 它把若干 helper 提升为 `__always_inline`。
+  - 它在 `change_pte_range()` 中显式 special-case `likely(nr_ptes == 1)`，
+    让 small-folio / order-0 常见路径更容易被编译器常量传播和内联优化。
+  - 后续 Vlastimil 给了 Reviewed-by，但也提醒这种依赖编译器 codegen 的 trick
+    长期上不算特别优雅。
+
+Andrew 后续回复说明已把 v3 更新到 `mm-unstable`。因此我们测试的
+`444fc9435e57` 不是只包含 `2/2`，而是包含这组 v3 series 的集成版本。对本 workload
+最关键的是 `2/2`，但 `1/2` 的 softleaf refactor 也在同一个测试内核中。
+
 ## 和我们原先机制猜测的关系
 
 我们此前对 `mprotect/shared_dirty_full_toggle_64m` 的核心解释是：
@@ -42,6 +68,9 @@ change_pte_range()
 `shared_dirty_full_toggle_64m` 是 `MAP_SHARED | MAP_ANONYMOUS` 的 64 MiB mapping。batch probe 直接显示 measured path 上 `nr_ptes=1` 占主导：每个 4 KiB PTE 都要付出 folio lookup、batch-size query、helper dispatch 和 commit/flush machinery 的固定成本，但没有形成有效 batch amortization。
 
 Pedro 的 patchset 正好命中这个方向。`linux-mm-unstable/mm/mprotect.c` 中可见几类变化：
+
+0. softleaf 逻辑已拆出：
+   - `change_softleaf_pte()`
 
 1. helper 被改成 `__always_inline`
    - `prot_commit_flush_ptes()`
