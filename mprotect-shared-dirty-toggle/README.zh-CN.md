@@ -57,6 +57,9 @@ cost，而不是 workload-state mismatch comparison。
 ## 目录
 
 - `workload/`：框架使用的 generated workload source。
+- `reproducer/`：给维护者快速检查用的 standalone C reproducer 和辅助脚本，不依赖
+  experiment framework。
+- `reproducer-validation/`：standalone reproducer 的 lab 验证总结。
 - `experiments/`：formal experiment profile。
 - `formal-lab/perf_{1,2,4}cpu/`：coverage disabled 的 performance run。
 - `formal-lab/coverage_1cpu/`：与 clean timing 分开收集的 direct-hit coverage 证据。

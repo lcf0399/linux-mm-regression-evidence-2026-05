@@ -60,6 +60,10 @@ comparison.
 ## Directories
 
 - `workload/`: generated workload source used by the framework.
+- `reproducer/`: standalone C reproducer and helper script for maintainer-side
+  quick checks outside the experiment framework.
+- `reproducer-validation/`: lab validation summary for the standalone
+  reproducer.
 - `experiments/`: formal experiment profile.
 - `formal-lab/perf_{1,2,4}cpu/`: performance runs with coverage disabled.
 - `formal-lab/coverage_1cpu/`: direct-hit coverage evidence collected separately from clean timing.

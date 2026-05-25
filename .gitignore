@@ -14,3 +14,9 @@ madvise-pageout-thp-noswap-refault/attribution/runs/
 # Lab orchestration scratch logs under analysis are local staging material.
 analysis/lab-followup-*/
 analysis/lab-launch-*.log
+
+# Standalone reproducer validation keeps curated summaries and run metadata
+# public; raw runner directories and verbose logs remain local unless requested.
+mprotect-shared-dirty-toggle/reproducer-validation/raw/
+mprotect-shared-dirty-toggle/reproducer-validation/lab-raw-*/
+mprotect-shared-dirty-toggle/reproducer-validation/*.log
