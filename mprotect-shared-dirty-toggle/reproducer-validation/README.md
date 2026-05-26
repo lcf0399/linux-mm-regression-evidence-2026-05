@@ -44,6 +44,14 @@ The 16 CPU row is kept as an extended follow-up row. It had one v6.12.77 QEMU
 failure, so it should be treated as supporting evidence rather than the cleanest
 primary row.
 
+I also repeated the 16 CPU row as a targeted rerun. That rerun completed cleanly:
+15 serial logs were checked, all matched `QEMU_SMP=16`, no log contained
+`noapic`, and all three kernels had zero failed runs. Its
+`iteration_ns_per_page` values were `386.8` for v6.12.77, `607.2` for v6.19.9,
+and `575.0` for mm-unstable. This suggests the earlier v6.12.77 QEMU failure
+was transient, but the 16 CPU result remains an extended row because it uses the
+larger 32 GiB guest-memory setting and is noisier than the 1/2/4/8 CPU rows.
+
 Primary metric: `iteration_ns_per_page`, lower is better.
 
 | Guest CPUs | Guest memory | v6.12.77 | v6.19.9 | mm-unstable | mm-unstable vs v6.19 | v6.12 -> v6.19 gap closed |
@@ -92,6 +100,12 @@ separate state audit. The state-shape conclusion remains based on
 - `lab-smp-summary-20260526.json`: same SMP follow-up data as JSON.
 - `lab-smp-serial-check-20260526.json`: serial-log guest CPU validation for
   the SMP follow-up.
+- `lab-smp-16cpu-rerun-iteration-comparison-20260526.csv`: targeted clean
+  16 CPU rerun comparison.
+- `lab-smp-16cpu-rerun-summary-20260526.csv`: targeted clean 16 CPU rerun
+  per-version/per-metric summary.
+- `lab-smp-16cpu-rerun-summary-20260526.json`: same targeted 16 CPU rerun data
+  as JSON, including serial-log validation.
 - `lab-iteration-comparison-20260525.csv`: earlier non-SMP screening table.
 - `lab-summary-20260525.csv`: earlier per-version/per-metric summary.
 - `lab-summary-20260525.json`: same earlier data with deduplication metadata.

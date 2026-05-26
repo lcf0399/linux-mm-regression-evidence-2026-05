@@ -42,6 +42,13 @@ serial-log validation 从 run reports 解析 serial log 路径，并检查 guest
 16 CPU 行作为 extended follow-up 保留。该行 v6.12.77 有一次 QEMU failure，
 因此更适合作为 supporting evidence，而不是最干净的 primary row。
 
+我又针对 16 CPU 行单独重跑了一次。该 rerun 已干净完成：检查了 15 个 serial
+logs，全部匹配 `QEMU_SMP=16`，没有 log 含 `noapic`，三棵 kernel 都没有 failed
+run。该 rerun 的 `iteration_ns_per_page` 为：v6.12.77 `386.8`，v6.19.9
+`607.2`，mm-unstable `575.0`。这说明前一轮 v6.12.77 QEMU failure 更像是偶发
+问题；但 16 CPU 结果仍作为 extended row，因为它使用更大的 32 GiB guest memory，
+而且比 1/2/4/8 CPU 行更容易受噪声影响。
+
 主要指标是 `iteration_ns_per_page`，越低越好。
 
 | Guest CPUs | Guest memory | v6.12.77 | v6.19.9 | mm-unstable | mm-unstable vs v6.19 | v6.12 -> v6.19 gap closed |
@@ -87,6 +94,12 @@ smaps state-shape 可见性。state-shape 结论仍以 `../state-audit-lab/` 为
 - `lab-smp-summary-20260526.json`：同一份 SMP follow-up 数据，JSON 格式。
 - `lab-smp-serial-check-20260526.json`：SMP follow-up 的 serial-log guest CPU
   validation。
+- `lab-smp-16cpu-rerun-iteration-comparison-20260526.csv`：16 CPU 定向干净重跑的
+  对比表。
+- `lab-smp-16cpu-rerun-summary-20260526.csv`：16 CPU 定向干净重跑的
+  per-version/per-metric summary。
+- `lab-smp-16cpu-rerun-summary-20260526.json`：同一份 16 CPU 定向重跑数据，
+  包含 serial-log validation。
 - `lab-iteration-comparison-20260525.csv`：较早的 non-SMP screening 对比表。
 - `lab-summary-20260525.csv`：较早的 per-version/per-metric summary。
 - `lab-summary-20260525.json`：同一份较早数据，包含去重元数据。
