@@ -1,11 +1,16 @@
 # Linux MM 性能回归证据包 - 2026 年 5 月
 
-这个仓库包含一份整理后的证据包，用于支撑两个 Linux MM 性能回归报告。仓库记录正式实验方法、实验环境、原始摘要和当前归因状态，方便审阅者直接核查报告中的结果。
+这个仓库包含一份整理后的证据包，用于支撑两个 Linux MM 性能回归报告，以及一个后续
+candidate-fix 分析。仓库记录正式实验方法、实验环境、摘要数据和当前归因状态，方便审阅者
+直接核查报告中的结果。
 
 这两个报告按 workload 明确收窄：
 
 - `madvise-pageout-thp-noswap-refault/`：匿名 THP、guest 无 swap、`MADV_PAGEOUT` 触发的 no-swap reclaim-failure path。目录名保留了原邮件里的 `refault` 说法；当前证据范围不声称页面真的被 page out 后 refault。
 - `mprotect-shared-dirty-toggle/`：shared dirty PTE 映射上的重复 `mprotect()` protection toggle。
+- `mincore-present-pte-scan/`：后续 `mincore()` present-PTE scan 候选分析。它是
+  RFC 风格的、由源码路径校准的 synthetic 信号和 candidate fix 草图，不是已经发送的正式
+  regression 报告。
 - `analysis/`：整理后的技术补充、patch 分析和短版历史摘要。私有上游提交流程复盘不放入这个公开 evidence bundle；正式证据仍以各 workload 目录为准。
 
 这不是一个广泛 benchmark suite。每个结论都只限定在下面描述的 workload 和实验环境内。
@@ -73,22 +78,48 @@ formal 证据的精确逐次运行元数据保留在 `pipeline_run_env.json`、`
     部分缓解该信号，但没有恢复到 `v6.12.77` 水平。
   - state-shape audit 显示，成功的 `v6.12.77`、`v6.19.9` 和
     `mm-unstable` run 都是同一种 4 KiB shared-dirty PTE mapping 状态。
+  - `reproducer/` 提供给维护者审阅的 standalone C reproducer，抽取自原
+    generated workload 的 shared-dirty full-range toggle 场景，不需要运行完整
+    experiment framework。
+  - `reproducer-validation/` 是该 standalone reproducer 的 lab screening
+    验证；它在 `1/2/4/8/16 CPU` 下保持同样大方向，但属于 5-repeat
+    reproducer/timing screening check，不替代前面的 formal evidence。
   - 当前口径：这是由源码路径校准的 synthetic shared-dirty PTE
     `mprotect()` workload，不是泛化的 `mprotect()` regression claim。
 
-两个 workload 都还没有 bisect 到具体 culprit commit。单独的 release-level sanity
-check 显示两者在 `v6.18.19` 已进入慢区间。
+- `mincore-present-pte-scan/`
+  - 这是后续候选分析，不属于最初两个正式报告。
+  - source-calibrated `no_thp_pte_scan_64m` workload 目标是
+    `mincore_pte_range()` 中 resident anonymous base-page 路径。
+  - release-level 和定向 A/B testing 把主台阶缩到 `v6.15 -> v6.16`，
+    最强 suspect 是
+    `4df65651f7075 ("mm: mincore: use pte_batch_hint() to batch process large folios")`。
+  - 本地 present-first test patch 在 v6.18 和 v7.0 的 x86/QEMU lab 上让
+    `no_thp_pte_scan_64m` 快约 30% 以上，同时 x86 上的 THP/no-THP semantic smoke
+    仍通过。
+  - 当前口径：已缩窄 suspect，并在 x86 lab 验证 candidate fix shape；但还需要
+    arm64 或 mTHP/large-folio 保真验证，才能作为 upstream-ready fix 讨论。
+
+最初两个报告都还没有完整 `git bisect` 到具体 culprit commit。单独的 release-level sanity
+check 显示两者在 `v6.18.19` 已进入慢区间。后续 `mincore` 候选针对 v6.16 suspect
+已有定向 A/B 证据，但仍不是完整 `git bisect` 结果。
 
 ## 数据取舍策略
 
-这个仓库的正式 workload 目录只放两个报告当前最新、可引用的证据包：
+这个仓库的正式 workload 目录只放两个报告当前最新、可引用的证据包，以及后续候选的
+紧凑 maintainer-facing 材料：
 
 - 用于主要性能结论的最新 lab formal refresh 结果
 - 必要的 coverage 证据，但和 clean performance timing 分开保存
+- 维护者要求时补充的 standalone reproducer、紧凑 summary 和必要 run metadata
 
 旧 screening、release-level sanity run、无效 run、失败 run、被 instrumentation
 污染的 run、探索性中间产物，默认不进入公开最小证据包。`analysis/` 目录只提供补充说明，
 不能替代正式 workload 证据。
+
+这个策略不等于删除所有逐次数据。公开目录可以保留 compact CSV/JSON summary、
+运行环境、执行顺序和完成哨兵；体积较大的原始 runner workspace、scratch log 和临时
+探索目录默认继续忽略，除非维护者明确要求。
 
 ## 主要限制条件
 
@@ -100,3 +131,7 @@ check 显示两者在 `v6.18.19` 已进入慢区间。
 原始 formal 结果里最干净的是 lab 1CPU run，2CPU 和 4CPU 是同方向补充证据但带有
 可靠性限制。后续 8/16 CPU 行是 extended follow-up context，不属于严格同内存的
 primary formal matrix。
+
+`mincore()` 材料不是正式 regression 报告。它只限定在由源码路径校准的 anonymous no-THP
+resident-PTE scan 和本地 present-first candidate fix shape。当前证据只覆盖 x86/QEMU
+lab，还没有证明 arm64/mTHP 保真。

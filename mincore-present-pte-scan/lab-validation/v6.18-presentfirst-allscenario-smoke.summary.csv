@@ -1,0 +1,9 @@
+cpu,kernel,scenario,n,all_semantic_ok,mincore_ns_per_1k_pages_mean,mincore_ns_per_1k_pages_median,mincore_ns_per_1k_pages_cv,mincore_ns_avg_mean,mincore_ns_avg_median,mincore_ns_avg_cv
+1,v6.18.19-preempt-advice,no_thp_pte_scan_4m,3,True,15259.0,15259.0,0.0,15625.0,15625.0,0.0
+1,v6.18.19-preempt-advice,no_thp_pte_scan_64m,3,True,15051.333,15065.0,0.0097,246605.667,246827.0,0.0097
+1,v6.18.19-preempt-advice,thp_pmd_shortcut_4m,3,True,10172.667,15259.0,0.866,10416.667,15625.0,0.866
+1,v6.18.19-preempt-advice,thp_pmd_shortcut_64m,3,True,4907.0,4738.0,0.0597,80408.0,77641.0,0.0596
+1,v6.18.19-presentfirst-fastpath-advice,no_thp_pte_scan_4m,3,True,20345.667,15259.0,0.433,20833.667,15625.0,0.433
+1,v6.18.19-presentfirst-fastpath-advice,no_thp_pte_scan_64m,3,True,10364.0,9875.0,0.0827,169811.0,161800.0,0.0827
+1,v6.18.19-presentfirst-fastpath-advice,thp_pmd_shortcut_4m,3,True,10172.667,15259.0,0.866,10416.667,15625.0,0.866
+1,v6.18.19-presentfirst-fastpath-advice,thp_pmd_shortcut_64m,3,True,5205.0,4738.0,0.1554,85291.333,77641.0,0.1554

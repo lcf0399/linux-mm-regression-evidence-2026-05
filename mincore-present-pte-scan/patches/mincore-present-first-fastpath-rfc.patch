@@ -1,0 +1,67 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: mincore local analysis <not-for-submission@example.invalid>
+Date: Fri, 29 May 2026 19:10:00 +0000
+Subject: [test patch, not for submission] mm/mincore: check present PTEs
+ before none/marker path
+
+mincore_pte_range() currently checks the none/marker case before the
+present-PTE path.  For the common resident anonymous base-page case, this
+means every PTE first pays the none/marker tests before reaching the hot
+present path and pte_batch_hint().
+
+Local x86/QEMU lab measurements for a MADV_NOHUGEPAGE anonymous 64 MiB
+mincore scan show that this branch layout is a large cost in v6.18.19 and
+v7.0.9.  Moving the present-PTE branch first, while still preserving
+pte_batch_hint() batching for batch > 1, improved the workload by roughly
+30-39% on v6.18.19 and 33-38% on v7.0.9 across QEMU_SMP=1/2/4.  The
+same test's THP/no-THP semantic smoke stayed valid.
+
+This is a local test patch that documents the candidate shape.  It is not
+ready for direct submission.  Before upstreaming, it still needs architecture
+review of pte_present() vs marker/swap encodings, a real Signed-off-by, and
+large-folio/mTHP preservation checks.
+---
+ mm/mincore.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/mm/mincore.c b/mm/mincore.c
+index 000000000000..000000000000 100644
+--- a/mm/mincore.c
++++ b/mm/mincore.c
+@@ -186,24 +186,25 @@ static int mincore_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ 		pte_t pte = ptep_get(ptep);
+ 
+ 		step = 1;
+-		/* We need to do cache lookup too for markers */
+-		if (pte_none(pte) || pte_is_marker(pte))
+-			__mincore_unmapped_range(addr, addr + PAGE_SIZE,
+-						 vma, vec);
+-		else if (pte_present(pte)) {
++		if (pte_present(pte)) {
+ 			unsigned int batch = pte_batch_hint(ptep, pte);
+ 
+ 			if (batch > 1) {
+ 				unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
+ 
+ 				step = min_t(unsigned int, batch, max_nr);
++				for (i = 0; i < step; i++)
++					vec[i] = 1;
++			} else {
++				*vec = 1;
+ 			}
+-
+-			for (i = 0; i < step; i++)
+-				vec[i] = 1;
++		/* We need to do cache lookup too for markers */
++		} else if (pte_none(pte) || pte_is_marker(pte)) {
++			__mincore_unmapped_range(addr, addr + PAGE_SIZE,
++						 vma, vec);
+ 		} else { /* pte is a swap entry */
+ 			const softleaf_t entry = softleaf_from_pte(pte);
+ 
+ 			*vec = mincore_swap(entry, false);
+ 		}
+ 		vec += step;
+ 	}
+-- 
+2.43.0

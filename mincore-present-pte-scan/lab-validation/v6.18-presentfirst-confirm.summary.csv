@@ -1,0 +1,10 @@
+cpu,kernel,scenario,n,all_semantic_ok,mincore_ns_per_1k_pages_mean,mincore_ns_per_1k_pages_median,mincore_ns_per_1k_pages_cv,mincore_ns_avg_mean,mincore_ns_avg_median,mincore_ns_avg_cv
+1,v6.15-mainline-preempt-advice,no_thp_pte_scan_64m,9,True,13373.222,12668.0,0.1545,219112.556,207553.0,0.1546
+1,v6.18.19-preempt-advice,no_thp_pte_scan_64m,9,True,16473.0,15205.0,0.1396,269900.333,249133.0,0.1396
+1,v6.18.19-presentfirst-fastpath-advice,no_thp_pte_scan_64m,9,True,11055.222,9966.0,0.2015,181140.222,163297.0,0.2015
+2,v6.15-mainline-preempt-advice,no_thp_pte_scan_64m,9,True,13454.444,13086.0,0.0798,220444.556,214413.0,0.0798
+2,v6.18.19-preempt-advice,no_thp_pte_scan_64m,9,True,16424.444,15833.0,0.0809,269107.222,259419.0,0.0809
+2,v6.18.19-presentfirst-fastpath-advice,no_thp_pte_scan_64m,9,True,11467.556,10660.0,0.1821,187889.222,174657.0,0.1821
+4,v6.15-mainline-preempt-advice,no_thp_pte_scan_64m,9,True,13651.778,13612.0,0.0323,223676.222,223020.0,0.0323
+4,v6.18.19-preempt-advice,no_thp_pte_scan_64m,9,True,16772.333,15701.0,0.1275,274804.0,257250.0,0.1275
+4,v6.18.19-presentfirst-fastpath-advice,no_thp_pte_scan_64m,9,True,11470.444,11037.0,0.1403,187943.0,180843.0,0.1403

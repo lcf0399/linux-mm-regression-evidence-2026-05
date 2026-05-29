@@ -1,0 +1,7 @@
+cpu,kernel,scenario,n,all_semantic_ok,mincore_ns_per_1k_pages_mean,mincore_ns_per_1k_pages_median,mincore_ns_per_1k_pages_cv,mincore_ns_avg_mean,mincore_ns_avg_median,mincore_ns_avg_cv
+1,v7.0.9-preempt,no_thp_pte_scan_64m,9,True,16328.778,16076.0,0.0388,267536.667,263405.0,0.0388
+1,v7.0.9-presentfirst-fastpath,no_thp_pte_scan_64m,9,True,10061.778,10000.0,0.0224,164860.0,163855.0,0.0224
+2,v7.0.9-preempt,no_thp_pte_scan_64m,9,True,17600.0,16761.0,0.1112,288364.222,274616.0,0.1112
+2,v7.0.9-presentfirst-fastpath,no_thp_pte_scan_64m,9,True,11856.444,10325.0,0.2468,194263.778,169167.0,0.2468
+4,v7.0.9-preempt,no_thp_pte_scan_64m,9,True,17819.0,16920.0,0.0952,291953.889,277217.0,0.0952
+4,v7.0.9-presentfirst-fastpath,no_thp_pte_scan_64m,9,True,11961.556,11128.0,0.1947,195986.889,182326.0,0.1947

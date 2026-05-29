@@ -1,14 +1,17 @@
 # Linux MM Regression Evidence - May 2026
 
 This repository contains a curated evidence bundle for two Linux MM performance
-regression reports. It documents the formal test method, environment, raw
-summaries, and current attribution state so that reviewers can audit the
-reported results directly.
+regression reports, plus one later candidate-fix analysis. It documents the
+formal test method, environment, summary data, and current attribution state so
+that reviewers can audit the reported results directly.
 
 The two reports are scoped by workload:
 
 - `madvise-pageout-thp-noswap-refault/`: `madvise(MADV_PAGEOUT)` on an anonymous THP/no-swap reclaim-failure path. The directory name preserves the wording from the original report; the current scope does not claim that the pages were actually paged out and faulted back in.
 - `mprotect-shared-dirty-toggle/`: repeated `mprotect()` toggling over a shared dirty PTE mapping.
+- `mincore-present-pte-scan/`: later `mincore()` present-PTE scan candidate
+  analysis. It is an RFC-style, source-calibrated synthetic signal and candidate
+  fix sketch, not a submitted regression report.
 - `analysis/`: curated technical notes, patch analysis, and short historical summaries. Private upstream-submission workflow notes are kept outside this public evidence bundle; the formal evidence remains in the workload directories.
 
 This is not a broad benchmark suite. Each claim is limited to the workload and environment described below.
@@ -79,24 +82,57 @@ scope.
     lab `1/2/4/8/16 CPU` matrix, but does not restore `v6.12.77`-level timing.
   - State-shape audit found the successful `v6.12.77`, `v6.19.9`, and
     `mm-unstable` runs use the same 4 KiB shared-dirty PTE mapping shape.
+  - `reproducer/` contains a maintainer-facing standalone C reproducer distilled
+    from the original generated shared-dirty full-range toggle workload. It does
+    not require the full experiment framework.
+  - `reproducer-validation/` contains lab screening validation for that
+    standalone reproducer. It keeps the same broad direction across
+    `1/2/4/8/16 CPU`, but it is a 5-repeat reproducer/timing screening check,
+    not a replacement for the earlier formal evidence.
   - Current scope: a synthetic/source-calibrated shared-dirty PTE `mprotect()`
     workload, not a generic `mprotect()` regression claim.
 
-No culprit commit has been bisected for either workload. Separate release-level
-sanity checks showed `v6.18.19` already in the slow range for both reports.
+- `mincore-present-pte-scan/`
+  - Later candidate analysis, not part of the original two reports.
+  - The source-calibrated `no_thp_pte_scan_64m` workload targets the resident
+    anonymous base-page path in `mincore_pte_range()`.
+  - Release-level and targeted A/B testing narrow the main step to
+    `v6.15 -> v6.16`, with
+    `4df65651f7075 ("mm: mincore: use pte_batch_hint() to batch process large folios")`
+    as the strongest suspect.
+  - A local present-first test patch improves the x86/QEMU lab
+    `no_thp_pte_scan_64m` timing by roughly 30% or more on v6.18 and v7.0, while
+    preserving the THP/no-THP semantic smoke on x86.
+  - Current scope: narrowed suspect plus candidate fix shape validated on x86
+    lab. It still needs arm64 or mTHP/large-folio preservation validation before
+    it should be treated as an upstream-ready fix.
+
+No culprit commit has been fully bisected for the original two reports. Separate
+release-level sanity checks showed `v6.18.19` already in the slow range for both
+of them. The later `mincore` candidate has targeted A/B evidence against the
+suspected v6.16 change, but it is still not a full `git bisect` result.
 
 ## Data Selection Policy
 
-The formal workload directories include the latest citable evidence bundle for the two reports:
+The formal workload directories include the latest citable evidence bundle for
+the two reports and compact maintainer-facing material for the later candidate:
 
 - latest lab formal refresh results for the main performance claims
 - separate coverage evidence where useful, kept distinct from clean performance timing
+- maintainer-requested standalone reproducers, compact summaries, and necessary
+  run metadata
 
 Older screenings, release-level sanity runs, invalid runs, failed runs,
 instrumentation-contaminated runs, and exploratory intermediate outputs are
 kept out of the minimal public evidence bundle by default. The `analysis/`
 directory contains supplementary notes and should not replace the workload
 directories.
+
+This policy does not mean all per-run data is removed. Public directories may
+keep compact CSV/JSON summaries, run environment records, execution order, and
+completion sentinels. Bulky raw runner workspaces, scratch logs, and temporary
+exploration directories remain ignored by default unless a maintainer asks for
+them.
 
 ## Main Caveats
 
@@ -109,3 +145,8 @@ protection-toggle workload; the cleanest original formal result is the 1CPU lab
 run, while 2CPU and 4CPU are same-direction supporting evidence with
 reliability caveats. The later 8/16 CPU rows are extended follow-up context, not
 part of the strict same-memory primary formal matrix.
+
+The `mincore()` material is not a formal regression report. It is scoped to a
+source-calibrated anonymous no-THP resident-PTE scan and a local present-first
+candidate fix shape. The current evidence is x86/QEMU lab only and does not yet
+prove arm64/mTHP preservation.
