@@ -12,8 +12,9 @@
 - 主场景：`no_thp_pte_scan_64m`。
 - 主指标：`mincore_ns_per_1k_pages`，越低越好。
 
-下面的 matched 8CPU/16CPU follow-up 单独标注，因为它们使用了比 primary 1/2/4 CPU
-matrix 更大的 CPU 和 guest-memory 设置。
+下面的 high-CPU follow-up 单独标注，因为它们使用了比 primary 1/2/4 CPU matrix
+更大的 CPU 和 guest-memory 设置。present-first high-CPU A/B 行测试的是候选 patch
+形状；matched-PREEMPT release-level bridge 行只作为上下文。
 
 ## 关键结果
 
@@ -49,6 +50,24 @@ CPU  v7.0.9     v7.0.9 present-first
 2    17600.000  11856.444
 4    17819.000  11961.556
 ```
+
+high-CPU present-first A/B follow-up：
+
+```text
+source: presentfirst-highcpu-ab.summary.csv
+source: presentfirst-highcpu-ab.delta.csv
+
+CPU/mem     kernel   original    present-first   mean improvement
+8/16 GiB    v6.18    16008.778      10941.444          31.65%
+16/32 GiB   v6.18    17549.556      11725.111          33.19%
+8/16 GiB    v7.0.9   17379.778      10999.889          36.71%
+16/32 GiB   v7.0.9   17917.778      11555.889          35.51%
+```
+
+这轮 matrix 72/72 完成，all_cpu_match=true，any_noapic=false，
+all_autorun_exit0=true，all_thp_always_cmdline=true，all_semantic_ok=true。
+它支持 present-first candidate shape 在 x86 high-CPU lab 路径上仍然有效；但仍不能
+替代 arm64/mTHP/contiguous-PTE preservation validation。
 
 matched-PREEMPT 8CPU follow-up：
 

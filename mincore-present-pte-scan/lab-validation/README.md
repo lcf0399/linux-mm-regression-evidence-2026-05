@@ -12,8 +12,10 @@ Common setup for the key timing rows:
 - Primary scenario: `no_thp_pte_scan_64m`.
 - Primary metric: `mincore_ns_per_1k_pages`, lower is better.
 
-The matched 8CPU/16CPU follow-ups below are labeled separately because they use
-larger CPU and guest-memory settings than the primary 1/2/4 CPU matrix.
+The high-CPU follow-ups below are labeled separately because they use larger
+CPU and guest-memory settings than the primary 1/2/4 CPU matrix.  The
+present-first high-CPU A/B rows test the candidate patch shape.  The
+matched-PREEMPT release-level bridge rows are context only.
 
 ## Key Results
 
@@ -49,6 +51,25 @@ CPU  v7.0.9     v7.0.9 present-first
 2    17600.000  11856.444
 4    17819.000  11961.556
 ```
+
+High-CPU present-first A/B follow-up:
+
+```text
+source: presentfirst-highcpu-ab.summary.csv
+source: presentfirst-highcpu-ab.delta.csv
+
+CPU/mem     kernel   original    present-first   mean improvement
+8/16 GiB    v6.18    16008.778      10941.444          31.65%
+16/32 GiB   v6.18    17549.556      11725.111          33.19%
+8/16 GiB    v7.0.9   17379.778      10999.889          36.71%
+16/32 GiB   v7.0.9   17917.778      11555.889          35.51%
+```
+
+This matrix completed 72/72 with all_cpu_match=true, any_noapic=false,
+all_autorun_exit0=true, all_thp_always_cmdline=true, and all_semantic_ok=true.
+It supports the present-first candidate shape on the x86 high-CPU lab path.
+It is still not a substitute for arm64/mTHP/contiguous-PTE preservation
+validation.
 
 Matched-PREEMPT 8CPU follow-up:
 

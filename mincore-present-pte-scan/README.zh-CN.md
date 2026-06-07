@@ -35,12 +35,14 @@ resident-PTE scan case 上引入了明显成本。当前 present-first 候选保
 
 - `reproducer/`：从 workload source 抽出的 standalone C reproducer。
 - `patches/mincore-present-first-fastpath-rfc.patch`：本地 test patch 形状，不可直接发送上游。
-- `lab-validation/`：紧凑 CSV summary、primary 1/2/4 CPU 验证说明，以及单独保存的
-  matched-PREEMPT 8CPU/16CPU follow-up rows。
+- `lab-validation/`：紧凑 CSV summary、primary 1/2/4 CPU 验证说明、high-CPU
+  present-first A/B rows，以及单独保存的 matched-PREEMPT release-level 8CPU/16CPU
+  bridge rows。
 
 ## 限制
 
-- present-first patch 目前只在 x86/QEMU lab 环境验证过。
+- present-first patch 目前只在 x86/QEMU lab 环境验证过，已覆盖到 16CPU/32GiB
+  no-THP present-PTE scan follow-up。
 - 在真正作为 upstream fix 发送前，还需要 arm64 或 mTHP/large-folio 保真验证。
 - 这里的 patch 文件故意标成 “not for submission”；正式发送前需要真实 commit message、
   Signed-off-by 和架构侧 review。

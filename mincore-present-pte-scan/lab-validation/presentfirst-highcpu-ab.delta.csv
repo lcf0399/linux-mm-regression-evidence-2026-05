@@ -1,0 +1,5 @@
+cpu_mem,kernel_base,original_mean,presentfirst_mean,mean_improvement_pct,original_median,presentfirst_median,median_improvement_pct,original_cv,presentfirst_cv,all_semantic_ok
+8CPU/16GiB,v6.18.19,16008.778,10941.444,31.65,15538.000,10617.000,31.67,0.0538,0.1053,True/True
+16CPU/32GiB,v6.18.19,17549.556,11725.111,33.19,17105.000,11682.000,31.70,0.1283,0.0651,True/True
+8CPU/16GiB,v7.0.9,17379.778,10999.889,36.71,16639.000,10640.000,36.05,0.1103,0.1117,True/True
+16CPU/32GiB,v7.0.9,17917.778,11555.889,35.51,17696.000,11109.000,37.22,0.0789,0.1031,True/True
