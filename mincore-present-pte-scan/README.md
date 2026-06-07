@@ -40,7 +40,8 @@ patch is `444fc9435e571`.
 - `reproducer/`: standalone C reproducer distilled from the workload source.
 - `patches/mincore-present-first-fastpath-rfc.patch`: local test patch shape,
   not ready for direct upstream submission.
-- `lab-validation/`: compact CSV summaries and a short validation note.
+- `lab-validation/`: compact CSV summaries, the primary 1/2/4 CPU validation
+  note, and separate matched-PREEMPT 8CPU/16CPU follow-up rows.
 
 ## Caveats
 

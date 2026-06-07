@@ -1,0 +1,2 @@
+cpu,kernel,scenario,n,all_semantic_ok,mincore_ns_per_1k_pages_mean,mincore_ns_per_1k_pages_median,mincore_ns_per_1k_pages_cv,mincore_ns_avg_mean,mincore_ns_avg_median,mincore_ns_avg_cv
+16,v7.0.9-preempt,no_thp_pte_scan_64m,9,True,18160.667,17804.0,0.0793,297550.444,291705.0,0.0793

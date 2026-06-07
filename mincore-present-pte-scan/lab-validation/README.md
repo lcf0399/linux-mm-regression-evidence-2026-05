@@ -12,6 +12,9 @@ Common setup for the key timing rows:
 - Primary scenario: `no_thp_pte_scan_64m`.
 - Primary metric: `mincore_ns_per_1k_pages`, lower is better.
 
+The matched 8CPU/16CPU follow-ups below are labeled separately because they use
+larger CPU and guest-memory settings than the primary 1/2/4 CPU matrix.
+
 ## Key Results
 
 v6.16 introduction-window A/B:
@@ -46,6 +49,40 @@ CPU  v7.0.9     v7.0.9 present-first
 2    17600.000  11856.444
 4    17819.000  11961.556
 ```
+
+Matched-PREEMPT 8CPU follow-up:
+
+```text
+source: matched-8cpu-preempt-bridge.summary.csv
+
+CPU/mem     v6.12.77-preempt  v6.18.19-preempt  v6.19.9-preempt  v7.0.9-preempt
+8/16 GiB          19866.111         20655.778         20867.333        20496.667
+```
+
+This matched 8CPU row is neutral for high-CPU old-faster evidence: v7.0.9 is
+only about 3.2% slower than v6.12.77 by mean, below the 5% threshold, and is not
+slower than v6.18.19/v6.19.9.  The original 36-run matrix had one v6.12.77 QEMU
+returncode 139; the summary uses the 35 successful original samples plus one
+successful v6.12.77 supplemental sample.
+
+Matched-PREEMPT 16CPU follow-up:
+
+```text
+source: matched-16cpu-preempt-bridge.summary.csv
+source: matched-16cpu-v70-supplement.summary.csv
+source: matched-16cpu-interpreted.summary.csv
+
+CPU/mem      v6.12.77-preempt  v6.18.19-preempt  v6.19.9-preempt  v7.0.9-preempt supplement
+16/32 GiB          15011.667         17296.111         18919.556                 18160.667
+```
+
+The 16CPU matched matrix completed 36/36 with all_semantic_ok=true, but one
+v7.0.9 repeat was an obvious timing outlier (`mincore_calls=4`, v7 CV=2.978).
+The table therefore follows `matched-16cpu-interpreted.summary.csv`, which uses
+the separate v7-only 9-repeat supplement for the v7 value.  Treat this row as
+noisy extended context only: it is consistent with a cumulative v6.12 -> later
+cost, but it is not a clean v7.0.9-vs-v6.19.9 regression row and it is not part
+of the primary 1/2/4 CPU evidence.
 
 v6.18 all-scenario semantic smoke:
 

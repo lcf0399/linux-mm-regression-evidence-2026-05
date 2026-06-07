@@ -1,0 +1,15 @@
+{
+  "completed_at_utc": "2026-06-07T05:45:46Z",
+  "source_dirs": [
+    "mm_regression_gen/out/mincore_no_thp_all_preempt_bridge_lab_20260607T_8cpu_16g",
+    "mm_regression_gen/out/mincore_no_thp_all_preempt_bridge_lab_20260607T_8cpu_16g_v612_supplement"
+  ],
+  "total_successful_samples": 36,
+  "total_failed_original_runs": 1,
+  "all_cpu_match": true,
+  "any_noapic": false,
+  "all_autorun_exit0_for_successful_and_supplemental": true,
+  "all_thp_always_cmdline": true,
+  "all_semantic_ok_for_successful_samples": true,
+  "note": "Original 36-run matrix had one v6.12 QEMU returncode 139. This combined summary uses the 35 successful original samples plus one successful v6.12 supplemental sample; the original failure is preserved in failures.original.csv."
+}

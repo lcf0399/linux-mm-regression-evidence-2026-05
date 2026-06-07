@@ -35,7 +35,8 @@ resident-PTE scan case 上引入了明显成本。当前 present-first 候选保
 
 - `reproducer/`：从 workload source 抽出的 standalone C reproducer。
 - `patches/mincore-present-first-fastpath-rfc.patch`：本地 test patch 形状，不可直接发送上游。
-- `lab-validation/`：紧凑 CSV summary 和验证说明。
+- `lab-validation/`：紧凑 CSV summary、primary 1/2/4 CPU 验证说明，以及单独保存的
+  matched-PREEMPT 8CPU/16CPU follow-up rows。
 
 ## 限制
 

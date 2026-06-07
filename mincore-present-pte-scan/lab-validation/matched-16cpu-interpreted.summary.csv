@@ -1,0 +1,5 @@
+cpu_mem,kernel,value_source,n,all_semantic_ok,mincore_ns_per_1k_pages_mean,mincore_ns_per_1k_pages_median,mincore_ns_per_1k_pages_cv,note
+16CPU/32GiB,v6.12.77-preempt-advice,matched-16cpu-preempt-bridge.summary.csv,9,True,15011.667,14687.000,0.1162,main matched matrix
+16CPU/32GiB,v6.18.19-preempt-advice,matched-16cpu-preempt-bridge.summary.csv,9,True,17296.111,16448.000,0.1477,main matched matrix
+16CPU/32GiB,v6.19.9-preempt-advice,matched-16cpu-preempt-bridge.summary.csv,9,True,18919.556,18980.000,0.0889,main matched matrix
+16CPU/32GiB,v7.0.9-preempt,matched-16cpu-v70-supplement.summary.csv,9,True,18160.667,17804.000,0.0793,main matched matrix had one v7 timing outlier with mincore_calls=4 and CV=2.9781; this row uses the clean v7-only supplement
