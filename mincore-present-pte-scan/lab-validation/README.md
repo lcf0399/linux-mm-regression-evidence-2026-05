@@ -19,6 +19,22 @@ matched-PREEMPT release-level bridge rows are context only.
 
 ## Key Results
 
+Matched-PREEMPT 1/2/4 CPU release bridge:
+
+```text
+source: matched-1-2-4-preempt-bridge.summary.csv
+source: matched-1-2-4-preempt-bridge.interpreted.csv
+
+CPU  v6.12.77   v6.18.19   v6.19.9    v7.0.9
+1    12827.667  15677.444  16482.667  16726.333
+2    13628.444  16102.333  18256.889  17270.333
+4    13798.222  16739.333  18892.111  17068.222
+```
+
+This bridge shows cumulative cost relative to v6.12, but not a clean new
+v7.0.9-vs-v6.19.9 regression.  It is used as narrowing context before the
+v6.16 introduction-window A/B below.
+
 v6.16 introduction-window A/B:
 
 ```text

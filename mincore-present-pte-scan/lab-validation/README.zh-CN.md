@@ -18,6 +18,21 @@
 
 ## 关键结果
 
+matched-PREEMPT 1/2/4 CPU release bridge：
+
+```text
+source: matched-1-2-4-preempt-bridge.summary.csv
+source: matched-1-2-4-preempt-bridge.interpreted.csv
+
+CPU  v6.12.77   v6.18.19   v6.19.9    v7.0.9
+1    12827.667  15677.444  16482.667  16726.333
+2    13628.444  16102.333  18256.889  17270.333
+4    13798.222  16739.333  18892.111  17068.222
+```
+
+这组 bridge 显示相对 v6.12 有累计成本，但不是干净的 v7.0.9-vs-v6.19.9 新增回归。
+它作为 narrowing context，然后再进入下面的 v6.16 introduction-window A/B。
+
 v6.16 引入窗口 A/B：
 
 ```text

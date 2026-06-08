@@ -1,0 +1,13 @@
+cpu,kernel,scenario,n,all_semantic_ok,mincore_ns_per_1k_pages_mean,mincore_ns_per_1k_pages_median,mincore_ns_per_1k_pages_cv,mincore_ns_avg_mean,mincore_ns_avg_median,mincore_ns_avg_cv
+1,v6.12.77-preempt-advice,no_thp_pte_scan_64m,9,True,12827.667,12574.0,0.0532,210176.111,206021.0,0.0532
+1,v6.18.19-preempt-advice,no_thp_pte_scan_64m,9,True,15677.444,15111.0,0.0543,256863.778,247591.0,0.0543
+1,v6.19.9-preempt-advice,no_thp_pte_scan_64m,9,True,16482.667,16474.0,0.0073,270062.778,269922.0,0.0073
+1,v7.0.9-preempt,no_thp_pte_scan_64m,9,True,16726.333,16087.0,0.072,274053.889,263578.0,0.072
+2,v6.12.77-preempt-advice,no_thp_pte_scan_64m,9,True,13628.444,13035.0,0.0667,223296.778,213574.0,0.0667
+2,v6.18.19-preempt-advice,no_thp_pte_scan_64m,9,True,16102.333,15531.0,0.072,263830.111,254468.0,0.072
+2,v6.19.9-preempt-advice,no_thp_pte_scan_64m,9,True,18256.889,16853.0,0.157,299129.222,276133.0,0.157
+2,v7.0.9-preempt,no_thp_pte_scan_64m,9,True,17270.333,16715.0,0.0771,282963.222,273864.0,0.0771
+4,v6.12.77-preempt-advice,no_thp_pte_scan_64m,9,True,13798.222,13271.0,0.1041,226078.778,217444.0,0.1041
+4,v6.18.19-preempt-advice,no_thp_pte_scan_64m,9,True,16739.333,16273.0,0.0889,274264.333,266624.0,0.0889
+4,v6.19.9-preempt-advice,no_thp_pte_scan_64m,9,True,18892.111,19059.0,0.0826,309538.0,312275.0,0.0826
+4,v7.0.9-preempt,no_thp_pte_scan_64m,9,True,17068.222,16753.0,0.0511,279653.0,274491.0,0.0511
