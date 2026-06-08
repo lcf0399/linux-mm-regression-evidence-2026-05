@@ -1,0 +1,39 @@
+name = "mincore_thp_pmd_shortcut"
+family = "mincore_thp_pmd_shortcut"
+source_file = "linux/mm/mincore.c"
+output_name = "mincore_thp_pmd_shortcut.c"
+description = "Source-calibrated mincore() workload probing the mincore_pte_range THP PMD shortcut against a MADV_NOHUGEPAGE PTE-scan control."
+
+[build]
+mode = "userspace"
+
+[kernel]
+enable_configs = ["ADVISE_SYSCALLS", "TRANSPARENT_HUGEPAGE"]
+extra_cmdline = ["transparent_hugepage=always"]
+
+[defaults]
+mapping_kb = 4096
+rounds = 8
+max_rounds = 256
+min_measure_ns = 120000000
+pattern = "thp_pmd_shortcut"
+
+[[scenario]]
+name = "thp_pmd_shortcut_4m"
+pattern = "thp_pmd_shortcut"
+mapping_kb = 4096
+
+[[scenario]]
+name = "thp_pmd_shortcut_64m"
+pattern = "thp_pmd_shortcut"
+mapping_kb = 65536
+
+[[scenario]]
+name = "no_thp_pte_scan_4m"
+pattern = "no_thp_pte_scan"
+mapping_kb = 4096
+
+[[scenario]]
+name = "no_thp_pte_scan_64m"
+pattern = "no_thp_pte_scan"
+mapping_kb = 65536

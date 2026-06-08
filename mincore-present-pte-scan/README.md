@@ -38,6 +38,9 @@ patch is `444fc9435e571`.
 ## Contents
 
 - `reproducer/`: standalone C reproducer distilled from the workload source.
+- `experiments/`: the workload target/profile used by the local experiment
+  framework. The standalone C source uses the same workload logic and is
+  provided for maintainer-side builds without the full framework.
 - `patches/mincore-present-first-fastpath-rfc.patch`: local test patch shape,
   not ready for direct upstream submission.
 - `lab-validation/`: compact CSV summaries, the primary 1/2/4 CPU validation
