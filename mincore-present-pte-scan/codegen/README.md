@@ -195,6 +195,9 @@ GCC15 v6.16 nobatch / batch<=1 fastpath:
     ...
 ```
 
+See `gcc-pte-loop-side-by-side.md` for the short side-by-side block note across
+GCC 13.3, GCC 14.2, and GCC 15.2.
+
 ## Interpretation
 
 This codegen check narrows the original report:
