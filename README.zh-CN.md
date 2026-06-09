@@ -97,9 +97,9 @@ formal 证据的精确逐次运行元数据保留在 `pipeline_run_env.json`、`
   - release-level 和定向 A/B testing 把主台阶缩到 `v6.15 -> v6.16`，
     最强 suspect 是
     `4df65651f7075 ("mm: mincore: use pte_batch_hint() to batch process large folios")`。
-  - GCC 13.3 和 GCC 14.2 会为 v6.16 original 生成不同的 `mincore_pte_range()` 形状，
-    而本地 fastpath 和 nobatch variants 形状相同。Clang 18.1.3 会把所有被检查
-    variants 生成成逐字节等价的输出。
+  - GCC 13.3、GCC 14.2 和 GCC 15.2 会为 v6.16 original 生成不同的
+    `mincore_pte_range()` 形状，而本地 fastpath 和 nobatch variants 形状相同。
+    Clang 18.1.3 会把所有被检查 variants 生成成逐字节等价的输出。
   - 当前口径：这是 GCC-built kernels 在 x86/QEMU lab 中观察到的
     compiler/codegen-sensitive signal。本地 present-first test patch 只作为历史讨论材料保留，
     不是 upstream-ready fix。
@@ -152,9 +152,9 @@ check 显示两者在 `v6.18.19` 已进入慢区间。后续 `mincore` 候选针
 primary formal matrix。
 
 `mincore()` 材料不是正式 regression 报告。它只限定在由源码路径校准的 anonymous no-THP
-resident-PTE scan。当前公开 claim 是 compiler/codegen-sensitive：GCC 13.3 和 GCC 14.2
-在被检查的 x86 path 上显示 generated-code layout 差异，而 Clang 18.1.3 没有。timing
-证据只来自 x86/QEMU lab，目前还没有 physical CPU timing。
+resident-PTE scan。当前公开 claim 是 compiler/codegen-sensitive：GCC 13.3、GCC 14.2
+和 GCC 15.2 在被检查的 x86 path 上显示 generated-code layout 差异，而 Clang 18.1.3
+没有。timing 证据只来自 x86/QEMU lab，目前还没有 physical CPU timing。
 
 `mempolicy/migrate` 材料不是 generic `mempolicy` regression 报告。它只限定在受控 NUMA2
 anonymous-page `migrate_pages()` route。当前 route 证据很强，但归因仍停在

@@ -81,6 +81,31 @@ GCC 14.2 behaves like GCC 13.3 for this check: v6.16 original still does not
 optimize back to the old x86 base-page shape, while the small `batch <= 1`
 fastpath and the nobatch variant are byte-identical.
 
+## GCC 15.2
+
+Compiler:
+
+```text
+gcc-15 (Ubuntu 15.2.0-4ubuntu4) 15.2.0
+GNU ld (GNU Binutils for Ubuntu) 2.42
+```
+
+This was run from user-local deb extraction, without installing system
+packages.
+
+`mincore_pte_range` sizes from `nm -S`:
+
+| variant | size | objdump relation |
+| --- | ---: | --- |
+| `gcc15_v6.15_original` | `0x1e0` | different |
+| `gcc15_v6.16_original` | `0x221` | different |
+| `gcc15_v6.16_fastpath` | `0x1d1` | identical to nobatch |
+| `gcc15_v6.16_nobatch` | `0x1d1` | identical to fastpath |
+
+GCC 15.2 also behaves like GCC 13.3 for this check: v6.16 original still does
+not optimize back to the old x86 base-page shape, while the small `batch <= 1`
+fastpath and the nobatch variant are byte-identical.
+
 ## Clang 18.1.3
 
 Compiler:
@@ -111,9 +136,9 @@ and patched variants.
 
 ## Actual GCC Difference
 
-This does not look like an obvious extra inlining decision.  In both GCC 13.3
-and GCC 14.2, the original and nobatch builds have the same external call /
-relocation targets:
+This does not look like an obvious extra inlining decision. In GCC 13.3,
+GCC 14.2, and GCC 15.2, the original and nobatch builds have the same external
+call / relocation targets:
 
 ```text
 __pte_offset_map_lock
@@ -140,5 +165,5 @@ This codegen check narrows the original report:
 - It is not proof of a compiler bug.
 - The original lab timing was observed with GCC 13.3 in a QEMU direct-boot
   environment.
-- The source shape is compiler/codegen-sensitive: GCC 13.3 and GCC 14.2 show a
-  generated-code layout difference; Clang 18.1.3 does not.
+- The source shape is compiler/codegen-sensitive: GCC 13.3, GCC 14.2, and
+  GCC 15.2 show a generated-code layout difference; Clang 18.1.3 does not.

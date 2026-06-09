@@ -105,10 +105,10 @@ scope.
     `v6.15 -> v6.16`, with
     `4df65651f7075 ("mm: mincore: use pte_batch_hint() to batch process large folios")`
     as the strongest suspect.
-  - GCC 13.3 and GCC 14.2 generate a different `mincore_pte_range()` shape for
-    v6.16 original, while the local fastpath and nobatch variants match each
-    other. Clang 18.1.3 generates byte-identical output for all checked
-    variants.
+  - GCC 13.3, GCC 14.2, and GCC 15.2 generate a different
+    `mincore_pte_range()` shape for v6.16 original, while the local fastpath
+    and nobatch variants match each other. Clang 18.1.3 generates
+    byte-identical output for all checked variants.
   - Current scope: compiler/codegen-sensitive signal observed with GCC-built
     kernels in the x86/QEMU lab. The local present-first test patch is retained
     as historical discussion material, not as an upstream-ready fix.
@@ -170,9 +170,10 @@ part of the strict same-memory primary formal matrix.
 
 The `mincore()` material is not a formal regression report. It is scoped to a
 source-calibrated anonymous no-THP resident-PTE scan. The current public claim
-is compiler/codegen-sensitive: GCC 13.3 and GCC 14.2 show a generated-code
-layout difference in the checked x86 path, while Clang 18.1.3 does not. The
-timing evidence is x86/QEMU lab only, with no physical CPU timing yet.
+is compiler/codegen-sensitive: GCC 13.3, GCC 14.2, and GCC 15.2 show a
+generated-code layout difference in the checked x86 path, while Clang 18.1.3
+does not. The timing evidence is x86/QEMU lab only, with no physical CPU timing
+yet.
 
 The `mempolicy/migrate` material is not a generic `mempolicy` regression report.
 It is scoped to a controlled NUMA2 anonymous-page migration route through

@@ -1,0 +1,136 @@
+0000000000000120 <mincore_pte_range>:
+ 120:	push   %r15
+ 122:	mov    %rdi,%r15
+ 125:	push   %r14
+ 127:	push   %r13
+ 129:	mov    %rcx,%r13
+ 12c:	push   %r12
+ 12e:	mov    %rdx,%r12
+ 131:	push   %rbp
+ 132:	mov    %rdx,%rbp
+ 135:	push   %rbx
+ 136:	sub    %rsi,%rbp
+ 139:	mov    %rsi,%rbx
+ 13c:	shr    $0xc,%rbp
+ 140:	sub    $0x18,%rsp
+ 144:	mov    0x18(%rcx),%rax
+ 148:	mov    0x28(%rcx),%r14
+ 14c:	movq   $0x0,0x10(%rsp)
+ 155:	mov    %rax,(%rsp)
+ 159:	mov    (%rdi),%rax
+ 15c:	test   $0xffffffffffffff9f,%rax
+ 162:	jne    20e <mincore_pte_range+0xee>
+ 168:	movq   $0x0,0x10(%rsp)
+ 171:	mov    0x8(%r13),%rdi
+ 175:	mov    %r15,%rsi
+ 178:	lea    0x10(%rsp),%rcx
+ 17d:	mov    %rbx,%rdx
+ 180:	call   185 <mincore_pte_range+0x65>
+			181: R_X86_64_PLT32	__pte_offset_map_lock-0x4
+ 185:	mov    %rax,%r15
+ 188:	test   %rax,%rax
+ 18b:	jne    1df <mincore_pte_range+0xbf>
+ 18d:	jmp    2cd <mincore_pte_range+0x1ad>
+ 192:	test   $0x101,%eax
+ 197:	jne    1d3 <mincore_pte_range+0xb3>
+ 199:	mov    %rax,%rdx
+ 19c:	and    $0xfffffffffffffff7,%rdx
+ 1a0:	test   $0x8,%al
+ 1a2:	cmovne %rdx,%rax
+ 1a6:	mov    %rax,%rdx
+ 1a9:	shr    $0x3b,%rax
+ 1ad:	not    %rdx
+ 1b0:	shl    $0x3a,%rax
+ 1b4:	shl    $0x5,%rdx
+ 1b8:	shr    $0xe,%rdx
+ 1bc:	or     %rax,%rdx
+ 1bf:	shr    $0x3a,%rax
+ 1c3:	cmp    $0x1f,%rax
+ 1c7:	je     1fd <mincore_pte_range+0xdd>
+ 1c9:	cmp    $0x1b,%rax
+ 1cd:	jbe    287 <mincore_pte_range+0x167>
+ 1d3:	movb   $0x1,(%r14)
+ 1d7:	add    $0x1,%r14
+ 1db:	add    $0x8,%r15
+ 1df:	cmp    %rbx,%r12
+ 1e2:	je     282 <mincore_pte_range+0x162>
+ 1e8:	mov    (%r15),%rax
+ 1eb:	mov    %rbx,%rdi
+ 1ee:	add    $0x1000,%rbx
+ 1f5:	test   $0xffffffffffffff9f,%rax
+ 1fb:	jne    192 <mincore_pte_range+0x72>
+ 1fd:	mov    (%rsp),%rdx
+ 201:	mov    %r14,%rcx
+ 204:	mov    %rbx,%rsi
+ 207:	call   10 <__mincore_unmapped_range>
+ 20c:	jmp    1d7 <mincore_pte_range+0xb7>
+ 20e:	test   $0x80,%al
+ 210:	jne    260 <mincore_pte_range+0x140>
+ 212:	test   $0x181,%eax
+ 217:	jne    276 <mincore_pte_range+0x156>
+ 219:	mov    (%rsp),%rsi
+ 21d:	mov    %r15,%rdi
+ 220:	call   225 <mincore_pte_range+0x105>
+			221: R_X86_64_PLT32	__pmd_trans_huge_lock-0x4
+ 225:	mov    %rax,0x10(%rsp)
+ 22a:	test   %rax,%rax
+ 22d:	je     171 <mincore_pte_range+0x51>
+ 233:	movslq %ebp,%rbp
+ 236:	mov    $0x1,%esi
+ 23b:	mov    %r14,%rdi
+ 23e:	mov    %rbp,%rdx
+ 241:	call   246 <mincore_pte_range+0x126>
+			242: R_X86_64_PLT32	memset-0x4
+ 246:	add    %rbp,0x28(%r13)
+ 24a:	call   24f <mincore_pte_range+0x12f>
+			24b: R_X86_64_PLT32	__cond_resched-0x4
+ 24f:	add    $0x18,%rsp
+ 253:	xor    %eax,%eax
+ 255:	pop    %rbx
+ 256:	pop    %rbp
+ 257:	pop    %r12
+ 259:	pop    %r13
+ 25b:	pop    %r14
+ 25d:	pop    %r15
+ 25f:	ret
+ 260:	movabs $0x200000000000080,%rdx
+ 26a:	and    %rax,%rdx
+ 26d:	cmp    $0x80,%rdx
+ 274:	je     219 <mincore_pte_range+0xf9>
+ 276:	bt     $0x39,%rax
+ 27b:	jb     219 <mincore_pte_range+0xf9>
+ 27d:	jmp    168 <mincore_pte_range+0x48>
+ 282:	movslq %ebp,%rbp
+ 285:	jmp    246 <mincore_pte_range+0x126>
+ 287:	mov    %rdx,%rsi
+ 28a:	shl    $0xe,%rdx
+ 28e:	shr    $0x1c,%rdx
+ 292:	and    $0x3fff,%esi
+ 298:	imul   $0xb0,%rdx,%rdi
+ 29f:	add    0x0(,%rax,8),%rdi
+			2a3: R_X86_64_32S	swapper_spaces
+ 2a7:	call   2ac <mincore_pte_range+0x18c>
+			2a8: R_X86_64_PLT32	filemap_get_incore_folio-0x4
+ 2ac:	cmp    $0xfffffffffffff000,%rax
+ 2b2:	ja     2ed <mincore_pte_range+0x1cd>
+ 2b4:	mov    (%rax),%rdx
+ 2b7:	shr    $0x3,%rdx
+ 2bb:	and    $0x1,%edx
+ 2be:	je     2c0 <mincore_pte_range+0x1a0>
+ 2c0:	decl   0x34(%rax)
+ 2c3:	je     2da <mincore_pte_range+0x1ba>
+ 2c5:	mov    %dl,(%r14)
+ 2c8:	jmp    1d7 <mincore_pte_range+0xb7>
+ 2cd:	movl   $0x2,0x20(%r13)
+ 2d5:	jmp    24f <mincore_pte_range+0x12f>
+ 2da:	mov    %rax,%rdi
+ 2dd:	mov    %dl,0xf(%rsp)
+ 2e1:	call   2e6 <mincore_pte_range+0x1c6>
+			2e2: R_X86_64_PLT32	__folio_put-0x4
+ 2e6:	movzbl 0xf(%rsp),%edx
+ 2eb:	jmp    2c5 <mincore_pte_range+0x1a5>
+ 2ed:	xor    %edx,%edx
+ 2ef:	jmp    2c5 <mincore_pte_range+0x1a5>
+ 2f1:	data16 cs nopw 0x0(%rax,%rax,1)
+ 2fc:	nopl   0x0(%rax)
+
