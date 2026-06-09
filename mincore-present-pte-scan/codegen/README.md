@@ -1,0 +1,97 @@
+# mincore_pte_range x86 codegen check
+
+This directory contains a small generated-code check for David Hildenbrand's
+question about whether x86 should optimize the `pte_batch_hint()` batching code
+back to the old base-page shape when `pte_batch_hint()` returns 1.
+
+This is codegen evidence only. It is not clean timing evidence.
+
+## Scope
+
+Function checked:
+
+```text
+mincore()
+  -> walk_page_range()
+     -> mincore_pte_range()
+```
+
+Build target:
+
+```text
+make -C <tree> mm/mincore.o
+objdump -dr --no-show-raw-insn mm/mincore.o
+nm -S --defined-only mm/mincore.o
+```
+
+Relevant config shape:
+
+```text
+CONFIG_ADVISE_SYSCALLS=y
+CONFIG_PGTABLE_LEVELS=5
+CONFIG_PREEMPT_NONE=y
+# CONFIG_PREEMPT is not set
+# CONFIG_PREEMPT_DYNAMIC is not set
+```
+
+## GCC 13.3
+
+Compiler:
+
+```text
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+GNU ld (GNU Binutils for Ubuntu) 2.42
+```
+
+`mincore_pte_range` sizes from `nm -S`:
+
+| variant | size | objdump relation |
+| --- | ---: | --- |
+| `gcc13_v6.15_original` | `0x1fb` | different |
+| `gcc13_v6.16_original` | `0x245` | different |
+| `gcc13_v6.16_fastpath` | `0x1ec` | identical to nobatch |
+| `gcc13_v6.16_nobatch` | `0x1ec` | identical to fastpath |
+
+With this GCC build, v6.16 original does not appear to optimize back to the old
+x86 base-page shape. The small `batch <= 1` fastpath and the nobatch variant
+produce the same generated `mincore_pte_range()` shape.
+
+## Clang 18.1.3
+
+Compiler:
+
+```text
+Ubuntu clang version 18.1.3 (1ubuntu1)
+GNU ld (GNU Binutils for Ubuntu) 2.42
+```
+
+`mincore_pte_range` sizes from `nm -S`:
+
+| variant | size | objdump relation |
+| --- | ---: | --- |
+| `clang18_v6.15_original` | `0x1f9` | identical |
+| `clang18_v6.16_original` | `0x1f9` | identical |
+| `clang18_v6.16_fastpath` | `0x1f9` | identical |
+| `clang18_v6.16_nobatch` | `0x1f9` | identical |
+
+The four Clang-generated objdump files are byte-identical:
+
+```text
+53463200547d1aef894b654e7dd681994e3894485c7ae3514284dbc9c5598242
+```
+
+So David's expectation holds for Clang 18.1.3: the x86 `pte_batch_hint() == 1`
+case is optimized to the same `mincore_pte_range()` output across the original
+and patched variants.
+
+## Interpretation
+
+This codegen check narrows the original report:
+
+- It is not a generic x86 `mincore()` regression claim.
+- It is not proof of a compiler bug.
+- The original lab timing was observed with GCC 13.3 in a QEMU direct-boot
+  environment.
+- The source shape is compiler/codegen-sensitive: GCC 13.3 shows a generated
+  code layout difference; Clang 18.1.3 does not.
+
