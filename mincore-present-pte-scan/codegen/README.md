@@ -56,6 +56,31 @@ With this GCC build, v6.16 original does not appear to optimize back to the old
 x86 base-page shape. The small `batch <= 1` fastpath and the nobatch variant
 produce the same generated `mincore_pte_range()` shape.
 
+## GCC 14.2
+
+Compiler:
+
+```text
+gcc-14 (Ubuntu 14.2.0-4ubuntu2~24.04.1) 14.2.0
+GNU ld (GNU Binutils for Ubuntu) 2.42
+```
+
+This was run from user-local deb extraction, without installing system
+packages.
+
+`mincore_pte_range` sizes from `nm -S`:
+
+| variant | size | objdump relation |
+| --- | ---: | --- |
+| `gcc14_v6.15_original` | `0x1e8` | different |
+| `gcc14_v6.16_original` | `0x229` | different |
+| `gcc14_v6.16_fastpath` | `0x1d9` | identical to nobatch |
+| `gcc14_v6.16_nobatch` | `0x1d9` | identical to fastpath |
+
+GCC 14.2 behaves like GCC 13.3 for this check: v6.16 original still does not
+optimize back to the old x86 base-page shape, while the small `batch <= 1`
+fastpath and the nobatch variant are byte-identical.
+
 ## Clang 18.1.3
 
 Compiler:
@@ -84,6 +109,29 @@ So David's expectation holds for Clang 18.1.3: the x86 `pte_batch_hint() == 1`
 case is optimized to the same `mincore_pte_range()` output across the original
 and patched variants.
 
+## Actual GCC Difference
+
+This does not look like an obvious extra inlining decision.  In both GCC 13.3
+and GCC 14.2, the original and nobatch builds have the same external call /
+relocation targets:
+
+```text
+__pte_offset_map_lock
+__pmd_trans_huge_lock
+memset
+__cond_resched
+filemap_get_incore_folio
+__folio_put
+swapper_spaces
+```
+
+The visible difference is the generated loop shape.  The v6.16 original source
+keeps `step` for `ptep += step`, `addr += step * PAGE_SIZE`, and `vec += step`
+after calling `pte_batch_hint()`.  In the GCC output, the present-PTE single
+page case is split into a later block that stores `1` and jumps back to a common
+advance block.  The nobatch and local `batch <= 1` fastpath builds produce a
+more compact hot path and are byte-identical to each other.
+
 ## Interpretation
 
 This codegen check narrows the original report:
@@ -92,6 +140,5 @@ This codegen check narrows the original report:
 - It is not proof of a compiler bug.
 - The original lab timing was observed with GCC 13.3 in a QEMU direct-boot
   environment.
-- The source shape is compiler/codegen-sensitive: GCC 13.3 shows a generated
-  code layout difference; Clang 18.1.3 does not.
-
+- The source shape is compiler/codegen-sensitive: GCC 13.3 and GCC 14.2 show a
+  generated-code layout difference; Clang 18.1.3 does not.

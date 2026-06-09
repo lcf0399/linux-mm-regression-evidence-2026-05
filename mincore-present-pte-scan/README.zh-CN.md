@@ -12,7 +12,7 @@ base-page PTE 路径的 `mincore()` source-calibrated workload。
 - 主指标：`mincore_ns_per_1k_pages`，越低越好。
 
 这不是生产应用回归，也不是泛化的 `mincore()` regression 报告。补做 `codegen/`
-里的 compiler cross-check 后，当前口径更窄：它是在 GCC 13.3 + QEMU lab 环境中观察到的
+里的 compiler cross-check 后，当前口径更窄：它是在 GCC-built + QEMU lab 环境中观察到的
 compiler/codegen-sensitive signal。Clang 18.1.3 会把被检查的 x86 代码形状优化成
 逐字节等价的 `mincore_pte_range()` 输出。
 
@@ -30,8 +30,9 @@ base-page resident-PTE scan case 显示出明显成本。
 
 关键 follow-up 结论来自 codegen 检查：
 
-- GCC 13.3 不会把 v6.16 original 生成成同一份 `mincore_pte_range()` 形状。本地
-  `batch <= 1` fastpath 和 nobatch variant 会生成相同形状。
+- GCC 13.3 和 GCC 14.2 不会把 v6.16 original 生成成同一份
+  `mincore_pte_range()` 形状。本地 `batch <= 1` fastpath 和 nobatch variant
+  会生成相同形状。
 - Clang 18.1.3 会把 v6.15 original、v6.16 original、本地 fastpath variant 和
   nobatch variant 全部生成成逐字节等价的 `mincore_pte_range()` 输出。
 
@@ -45,8 +46,8 @@ base-page resident-PTE scan case 显示出明显成本。
   使用同一套 workload 逻辑，方便维护者不依赖完整框架直接构建。
 - `patches/mincore-present-first-fastpath-rfc.patch`：本地 test patch 形状，不可直接发送上游；
   当前只作为历史讨论材料保留。
-- `codegen/`：GCC 13.3 和 Clang 18.1.3 下，v6.15/v6.16 original 与本地 variants 的
-  `mincore_pte_range()` nm/objdump 对比。
+- `codegen/`：GCC 13.3、GCC 14.2 和 Clang 18.1.3 下，v6.15/v6.16 original 与
+  本地 variants 的 `mincore_pte_range()` nm/objdump 对比。
 - `lab-validation/`：紧凑 CSV summary、primary 1/2/4 CPU 验证说明、matched-PREEMPT
   release bridge rows、high-CPU v6.16 introduction-window A/B rows，以及 high-CPU
   present-first A/B rows。

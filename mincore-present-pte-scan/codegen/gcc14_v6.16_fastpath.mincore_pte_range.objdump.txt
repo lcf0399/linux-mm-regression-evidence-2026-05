@@ -1,0 +1,137 @@
+0000000000000100 <mincore_pte_range>:
+ 100:	push   %r15
+ 102:	mov    %rdi,%r15
+ 105:	push   %r14
+ 107:	push   %r13
+ 109:	mov    %rdx,%r13
+ 10c:	push   %r12
+ 10e:	sub    %rsi,%r13
+ 111:	mov    %rcx,%r12
+ 114:	push   %rbp
+ 115:	shr    $0xc,%r13
+ 119:	mov    %rdx,%rbp
+ 11c:	push   %rbx
+ 11d:	mov    %rsi,%rbx
+ 120:	sub    $0x18,%rsp
+ 124:	mov    0x18(%rcx),%rax
+ 128:	mov    0x28(%rcx),%r14
+ 12c:	movq   $0x0,0x10(%rsp)
+ 135:	mov    %rax,(%rsp)
+ 139:	mov    (%rdi),%rax
+ 13c:	test   $0xffffffffffffff9f,%rax
+ 142:	jne    1ef <mincore_pte_range+0xef>
+ 148:	movq   $0x0,0x10(%rsp)
+ 151:	mov    0x8(%r12),%rdi
+ 156:	mov    %r15,%rsi
+ 159:	lea    0x10(%rsp),%rcx
+ 15e:	mov    %rbx,%rdx
+ 161:	call   166 <mincore_pte_range+0x66>
+			162: R_X86_64_PLT32	__pte_offset_map_lock-0x4
+ 166:	mov    %rax,%r15
+ 169:	test   %rax,%rax
+ 16c:	jne    1c0 <mincore_pte_range+0xc0>
+ 16e:	jmp    2b7 <mincore_pte_range+0x1b7>
+ 173:	test   $0x101,%eax
+ 178:	jne    1b4 <mincore_pte_range+0xb4>
+ 17a:	mov    %rax,%rdx
+ 17d:	and    $0xfffffffffffffff7,%rdx
+ 181:	test   $0x8,%al
+ 183:	cmovne %rdx,%rax
+ 187:	mov    %rax,%rdx
+ 18a:	shr    $0x3b,%rax
+ 18e:	not    %rdx
+ 191:	shl    $0x3a,%rax
+ 195:	shl    $0x5,%rdx
+ 199:	shr    $0xe,%rdx
+ 19d:	or     %rax,%rdx
+ 1a0:	shr    $0x3a,%rax
+ 1a4:	cmp    $0x1f,%rax
+ 1a8:	je     1de <mincore_pte_range+0xde>
+ 1aa:	cmp    $0x1b,%rax
+ 1ae:	jbe    269 <mincore_pte_range+0x169>
+ 1b4:	movb   $0x1,(%r14)
+ 1b8:	add    $0x1,%r14
+ 1bc:	add    $0x8,%r15
+ 1c0:	cmp    %rbx,%rbp
+ 1c3:	je     264 <mincore_pte_range+0x164>
+ 1c9:	mov    (%r15),%rax
+ 1cc:	mov    %rbx,%rdi
+ 1cf:	add    $0x1000,%rbx
+ 1d6:	test   $0xffffffffffffff9f,%rax
+ 1dc:	jne    173 <mincore_pte_range+0x73>
+ 1de:	mov    (%rsp),%rdx
+ 1e2:	mov    %r14,%rcx
+ 1e5:	mov    %rbx,%rsi
+ 1e8:	call   10 <__mincore_unmapped_range>
+ 1ed:	jmp    1b8 <mincore_pte_range+0xb8>
+ 1ef:	test   $0x80,%al
+ 1f1:	jne    242 <mincore_pte_range+0x142>
+ 1f3:	test   $0x181,%eax
+ 1f8:	jne    258 <mincore_pte_range+0x158>
+ 1fa:	mov    (%rsp),%rsi
+ 1fe:	mov    %r15,%rdi
+ 201:	call   206 <mincore_pte_range+0x106>
+			202: R_X86_64_PLT32	__pmd_trans_huge_lock-0x4
+ 206:	mov    %rax,0x10(%rsp)
+ 20b:	test   %rax,%rax
+ 20e:	je     151 <mincore_pte_range+0x51>
+ 214:	movslq %r13d,%r13
+ 217:	mov    $0x1,%esi
+ 21c:	mov    %r14,%rdi
+ 21f:	mov    %r13,%rdx
+ 222:	call   227 <mincore_pte_range+0x127>
+			223: R_X86_64_PLT32	memset-0x4
+ 227:	add    %r13,0x28(%r12)
+ 22c:	call   231 <mincore_pte_range+0x131>
+			22d: R_X86_64_PLT32	__cond_resched-0x4
+ 231:	add    $0x18,%rsp
+ 235:	xor    %eax,%eax
+ 237:	pop    %rbx
+ 238:	pop    %rbp
+ 239:	pop    %r12
+ 23b:	pop    %r13
+ 23d:	pop    %r14
+ 23f:	pop    %r15
+ 241:	ret
+ 242:	movabs $0x200000000000080,%rdx
+ 24c:	and    %rax,%rdx
+ 24f:	cmp    $0x80,%rdx
+ 256:	je     1fa <mincore_pte_range+0xfa>
+ 258:	bt     $0x39,%rax
+ 25d:	jb     1fa <mincore_pte_range+0xfa>
+ 25f:	jmp    148 <mincore_pte_range+0x48>
+ 264:	movslq %r13d,%r13
+ 267:	jmp    227 <mincore_pte_range+0x127>
+ 269:	mov    %rdx,%rsi
+ 26c:	shl    $0xe,%rdx
+ 270:	shr    $0x1c,%rdx
+ 274:	and    $0x3fff,%esi
+ 27a:	lea    (%rdx,%rdx,4),%rcx
+ 27e:	lea    (%rdx,%rcx,2),%rdi
+ 282:	shl    $0x4,%rdi
+ 286:	add    0x0(,%rax,8),%rdi
+			28a: R_X86_64_32S	swapper_spaces
+ 28e:	call   293 <mincore_pte_range+0x193>
+			28f: R_X86_64_PLT32	filemap_get_incore_folio-0x4
+ 293:	mov    %rax,%rdi
+ 296:	cmp    $0xfffffffffffff000,%rax
+ 29c:	ja     2d5 <mincore_pte_range+0x1d5>
+ 29e:	mov    (%rax),%rax
+ 2a1:	shr    $0x3,%rax
+ 2a5:	and    $0x1,%eax
+ 2a8:	je     2aa <mincore_pte_range+0x1aa>
+ 2aa:	decl   0x34(%rdi)
+ 2ad:	je     2c5 <mincore_pte_range+0x1c5>
+ 2af:	mov    %al,(%r14)
+ 2b2:	jmp    1b8 <mincore_pte_range+0xb8>
+ 2b7:	movl   $0x2,0x20(%r12)
+ 2c0:	jmp    231 <mincore_pte_range+0x131>
+ 2c5:	mov    %al,0xf(%rsp)
+ 2c9:	call   2ce <mincore_pte_range+0x1ce>
+			2ca: R_X86_64_PLT32	__folio_put-0x4
+ 2ce:	movzbl 0xf(%rsp),%eax
+ 2d3:	jmp    2af <mincore_pte_range+0x1af>
+ 2d5:	xor    %eax,%eax
+ 2d7:	jmp    2af <mincore_pte_range+0x1af>
+ 2d9:	nopl   0x0(%rax)
+

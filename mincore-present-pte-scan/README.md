@@ -14,7 +14,7 @@ Current scope:
 
 This is not a claim about a production application and not a generic
 `mincore()` regression report.  After the compiler cross-check in `codegen/`,
-the current scope is narrower: it is a GCC-13.3/QEMU-observed
+the current scope is narrower: it is a GCC-built/QEMU-observed
 compiler/codegen-sensitive signal.  Clang 18.1.3 optimizes the checked x86
 shapes to byte-identical `mincore_pte_range()` output.
 
@@ -32,9 +32,9 @@ lab runs, the base-page resident-PTE scan case showed a sizeable cost.
 
 The key follow-up result is the codegen check:
 
-- GCC 13.3 does not generate the same `mincore_pte_range()` shape for v6.16
-  original.  The local `batch <= 1` fastpath and the nobatch variant do produce
-  the same shape.
+- GCC 13.3 and GCC 14.2 do not generate the same `mincore_pte_range()` shape
+  for v6.16 original.  The local `batch <= 1` fastpath and the nobatch variant
+  do produce the same shape.
 - Clang 18.1.3 generates byte-identical `mincore_pte_range()` output for
   v6.15 original, v6.16 original, the local fastpath variant, and the nobatch
   variant.
@@ -53,8 +53,8 @@ kernel regression fix.
 - `patches/mincore-present-first-fastpath-rfc.patch`: local test patch shape,
   not ready for direct upstream submission; retained as historical discussion
   material.
-- `codegen/`: GCC 13.3 and Clang 18.1.3 `mincore_pte_range()` nm/objdump
-  comparison for v6.15/v6.16 original and local variants.
+- `codegen/`: GCC 13.3, GCC 14.2, and Clang 18.1.3 `mincore_pte_range()`
+  nm/objdump comparison for v6.15/v6.16 original and local variants.
 - `lab-validation/`: compact CSV summaries, the primary 1/2/4 CPU validation
   note, matched-PREEMPT release bridge rows, high-CPU v6.16
   introduction-window A/B rows, and high-CPU present-first A/B rows.
