@@ -102,6 +102,18 @@ GNU ld (GNU Binutils for Ubuntu) 2.42
 GCC 15.2 在这个检查里也和 GCC 13.3 方向一致：v6.16 original 仍没有优化回旧的
 x86 base-page 形状，而本地 `batch <= 1` fastpath 和 nobatch variant 逐字节等价。
 
+同时保存了 GCC 15.2 的 `mincore_pte_range()` focused dump snippets：
+
+| variant | optimized lines | RTL expand lines | objdump lines | objdump jumps |
+| --- | ---: | ---: | ---: | ---: |
+| `gcc15_v6.16_original` | 321 | 993 | 146 | 25 |
+| `gcc15_v6.16_fastpath` | 299 | 921 | 136 | 23 |
+| `gcc15_v6.16_nobatch` | 299 | 921 | 136 | 23 |
+
+最终 fastpath 和 nobatch objdump 逐字节等价。它们的 optimized dump 只剩机械性的
+SSA/source-line 命名差异。相反，original build 在 optimized 和 RTL-expand 阶段就已经
+更大，不是最终汇编阶段才突然产生的差异。
+
 ## Clang 18.1.3
 
 Compiler：
@@ -149,6 +161,31 @@ swapper_spaces
 和 `vec += step`。GCC 输出里，present-PTE single-page case 被拆到后面的 block：
 先 store `1`，再跳回 common advance block。nobatch 和本地 `batch <= 1` fastpath
 则生成更紧凑的 hot path，并且二者逐字节等价。
+
+objdump 里的 hot-path 形状可以概括为：
+
+```text
+GCC15 v6.16 original:
+  ... test present bits
+  jne  <later present-store block>
+  ...
+  common advance:
+    add vec
+    add ptep
+    cmp end
+    jne loop
+  later present-store block:
+    movb $0x1,(vec)
+    jmp common advance
+
+GCC15 v6.16 nobatch / batch<=1 fastpath:
+  present-store block:
+    movb $0x1,(vec)
+    add vec
+    add ptep
+    cmp end
+    ...
+```
 
 ## 解释
 

@@ -1,0 +1,299 @@
+;; Function mincore_pte_range (mincore_pte_range, funcdef_no=6075, decl_uid=61876, cgraph_uid=6260, symbol_order=6259)
+
+Removing basic block 33
+Removing basic block 34
+Removing basic block 35
+Removing basic block 36
+Removing basic block 37
+Removing basic block 38
+Removing basic block 39
+Removing basic block 40
+Removing basic block 41
+Removing basic block 42
+Removing basic block 43
+Removing basic block 44
+Removing basic block 45
+Removing basic block 46
+Removing basic block 47
+Removing basic block 48
+Removing basic block 49
+Removing basic block 50
+int mincore_pte_range (struct pmd_t * pmd, long unsigned int addr, long unsigned int end, struct mm_walk * walk)
+{
+  long unsigned int pmd$pmd;
+  unsigned char present;
+  struct folio * folio;
+  bool c;
+  long unsigned int pte$pte;
+  long unsigned int SR.85;
+  struct pte_t * pte;
+  int nr;
+  unsigned char * vec;
+  struct pte_t * ptep;
+  struct vm_area_struct * vma;
+  struct spinlock_t * ptl;
+  struct spinlock_t * _1;
+  long unsigned int _2;
+  long unsigned int _3;
+  long unsigned int _5;
+  struct mm_struct * _6;
+  struct address_space * _11;
+  long unsigned int _12;
+  long unsigned int _13;
+  struct address_space * _14;
+  void * _16;
+  void * _18;
+  long unsigned int _41;
+  long unsigned int _60;
+  unsigned int _61;
+  long unsigned int _62;
+  long long unsigned int _72;
+  long long unsigned int _73;
+  struct spinlock_t * _74;
+  long unsigned int _77;
+  long unsigned int _78;
+  long unsigned int _87;
+  int _88;
+  int _89;
+  long unsigned int _91;
+  long unsigned int _95;
+  long unsigned int _96;
+  long unsigned int _98;
+  long unsigned int _99;
+  long unsigned int _100;
+  long unsigned int _101;
+  long unsigned int _102;
+  long unsigned int _103;
+  long unsigned int _106;
+  long unsigned int ptr.13_115;
+  long unsigned int _119;
+  long unsigned int _120;
+  _Bool _121;
+  struct atomic_t * _123;
+  int _132;
+  long unsigned int prephitmp_133;
+  long unsigned int _138;
+  int _139;
+  long unsigned int _152;
+
+  <bb 2> [local count: 317544158]:
+  _1 = .DEFERRED_INIT (8, 2, &"ptl"[0]);
+  ptl = _1;
+  vma_30 = walk_29(D)->vma;
+  vec_31 = walk_29(D)->private;
+  _2 = end_32(D) - addr_33(D);
+  _3 = _2 >> 12;
+  nr_34 = (int) _3;
+  pmd$pmd_24 = pmd_35(D)->pmd;
+  _77 = pmd$pmd_24 & 18446744073709551519;
+  if (_77 != 0)
+    goto <bb 3>; [50.00%]
+  else
+    goto <bb 7>; [50.00%]
+
+  <bb 3> [local count: 158772079]:
+  _78 = pmd$pmd_24 & 128;
+  if (_78 != 0)
+    goto <bb 5>; [50.00%]
+  else
+    goto <bb 4>; [50.00%]
+
+  <bb 4> [local count: 79386039]:
+  _106 = pmd$pmd_24 & 18442240474082185215;
+  _132 = (int) _106;
+  _139 = _132 & 385;
+  if (_139 == 0)
+    goto <bb 8>; [100.00%]
+  else
+    goto <bb 6>; [0.00%]
+
+  <bb 5> [local count: 94501142]:
+  _72 = pmd$pmd_24 & 144115188075856000;
+  if (_72 == 128)
+    goto <bb 8>; [56.20%]
+  else
+    goto <bb 6>; [43.80%]
+
+  <bb 6> [local count: 142114896]:
+  _73 = pmd$pmd_24 & 144115188075855872;
+  if (_73 != 0)
+    goto <bb 8>; [100.00%]
+  else
+    goto <bb 7>; [0.00%]
+
+  <bb 7> [local count: 58046929]:
+  ptl = 0B;
+  goto <bb 10>; [100.00%]
+
+  <bb 8> [local count: 259497229]:
+  _74 = __pmd_trans_huge_lock (pmd_35(D), vma_30);
+  ptl = _74;
+  if (_74 != 0B)
+    goto <bb 9>; [66.80%]
+  else
+    goto <bb 10>; [33.20%]
+
+  <bb 9> [local count: 173347357]:
+  _5 = (long unsigned int) nr_34;
+  memset (vec_31, 1, _5);
+  __asm__ __volatile__("" :  :  : "memory");
+  goto <bb 30>; [100.00%]
+
+  <bb 10> [local count: 144196802]:
+  _6 = walk_29(D)->mm;
+  pte_55 = __pte_offset_map_lock (_6, pmd_35(D), addr_33(D), &ptl);
+  if (pte_55 == 0B)
+    goto <bb 13>; [18.09%]
+  else
+    goto <bb 11>; [81.91%]
+
+  <bb 11> [local count: 118111601]:
+  if (end_32(D) != addr_33(D))
+    goto <bb 14>; [89.00%]
+  else
+    goto <bb 12>; [11.00%]
+
+  <bb 12> [local count: 118111600]:
+  __asm__ __volatile__("" :  :  : "memory");
+  __asm__ __volatile__("" :  :  : "memory");
+  _152 = (long unsigned int) nr_34;
+  goto <bb 30>; [100.00%]
+
+  <bb 13> [local count: 26085201]:
+  walk_29(D)->action = 2;
+  goto <bb 31>; [100.00%]
+
+  <bb 14> [local count: 955630224]:
+  # addr_136 = PHI <_138(29), addr_33(D)(11)>
+  # ptep_118 = PHI <ptep_50(29), pte_55(11)>
+  # vec_94 = PHI <vec_49(29), vec_31(11)>
+  SR.85_46 ={v} MEM[(const volatile struct pte_t *)ptep_118];
+  _41 = SR.85_46 & 18446744073709551519;
+  _138 = addr_136 + 4096;
+  if (_41 == 0)
+    goto <bb 19>; [50.00%]
+  else
+    goto <bb 15>; [50.00%]
+
+  <bb 15> [local count: 477815112]:
+  _87 = SR.85_46 & 18442240474082185215;
+  _88 = (int) _87;
+  _89 = _88 & 257;
+  if (_89 == 0)
+    goto <bb 16>; [50.00%]
+  else
+    goto <bb 32>; [50.00%]
+
+  <bb 16> [local count: 119453778]:
+  _95 = SR.85_46 & 8;
+  if (_95 != 0)
+    goto <bb 17>; [50.00%]
+  else
+    goto <bb 18>; [50.00%]
+
+  <bb 17> [local count: 59726889]:
+  _96 = SR.85_46 & 18446744073709551607;
+
+  <bb 18> [local count: 119453778]:
+  # pte$pte_97 = PHI <SR.85_46(16), _96(17)>
+  _98 = ~pte$pte_97;
+  _99 = _98 << 5;
+  _100 = _99 >> 14;
+  _101 = pte$pte_97 >> 59;
+  _102 = _101 << 58;
+  _103 = _100 | _102;
+  _91 = _103 >> 58;
+  if (_91 == 31)
+    goto <bb 19>; [34.00%]
+  else
+    goto <bb 20>; [66.00%]
+
+  <bb 19> [local count: 716722669]:
+  __mincore_unmapped_range (addr_136, _138, vma_30, vec_94);
+  goto <bb 29>; [100.00%]
+
+  <bb 20> [local count: 119453778]:
+  if (_91 > 27)
+    goto <bb 21>; [67.00%]
+  else
+    goto <bb 22>; [33.00%]
+
+  <bb 21> [local count: 80034032]:
+  MEM[(unsigned char *)vec_94] = 1;
+  goto <bb 29>; [100.00%]
+
+  <bb 22> [local count: 39419747]:
+  _62 = _103 & 16383;
+  _61 = (unsigned int) _91;
+  _11 = swapper_spaces[_61];
+  _60 = _103 >> 14;
+  _12 = _60 & 17592186044415;
+  _13 = _12 * 176;
+  _14 = _11 + _13;
+  folio_114 = filemap_get_incore_folio (_14, _62);
+  ptr.13_115 = (long unsigned int) folio_114;
+  if (ptr.13_115 > 18446744073709547520)
+    goto <bb 28>; [10.00%]
+  else
+    goto <bb 23>; [90.00%]
+
+  <bb 23> [local count: 35477772]:
+  _119 ={v} MEM[(const volatile long unsigned int *)folio_114];
+  _120 = _119 >> 3;
+  _121 = (_Bool) _120;
+  if (_121 != 0)
+    goto <bb 24>; [50.00%]
+  else
+    goto <bb 25>; [50.00%]
+
+  <bb 24> [local count: 17738886]:
+  __asm__ __volatile__("" :  :  : "memory");
+
+  <bb 25> [local count: 35477772]:
+  present_122 = (unsigned char) _121;
+  _123 = &MEM[(struct page *)folio_114]._refcount;
+  __asm__ __volatile__ __inline__("decl %0
+	/* output condition code e*/
+" : "var" "=m" _123->counter, "=@cce" c_124 : "m" _123->counter : "memory");
+  if (c_124 != 0)
+    goto <bb 26>; [33.00%]
+  else
+    goto <bb 27>; [67.00%]
+
+  <bb 26> [local count: 11707665]:
+  __folio_put (folio_114);
+
+  <bb 27> [local count: 23770107]:
+
+  <bb 28> [local count: 39419747]:
+  # present_125 = PHI <0(22), present_122(27)>
+  MEM[(unsigned char *)vec_94] = present_125;
+
+  <bb 29> [local count: 955630225]:
+  vec_49 = vec_94 + 1;
+  ptep_50 = ptep_118 + 8;
+  if (end_32(D) != _138)
+    goto <bb 14>; [89.00%]
+  else
+    goto <bb 12>; [11.00%]
+
+  <bb 30> [local count: 291458957]:
+  # prephitmp_133 = PHI <_5(9), _152(12)>
+out:
+  _16 = walk_29(D)->private;
+  _18 = _16 + prephitmp_133;
+  walk_29(D)->private = _18;
+  __cond_resched ();
+
+  <bb 31> [local count: 317544158]:
+  ptl ={v} {CLOBBER(eos)};
+  return 0;
+
+  <bb 32> [local count: 119453778]:
+  MEM[(unsigned char *)vec_94] = 1;
+  goto <bb 29>; [100.00%]
+
+}
+
+
+

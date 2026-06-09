@@ -1,0 +1,993 @@
+;; Function mincore_pte_range (mincore_pte_range, funcdef_no=6075, decl_uid=61876, cgraph_uid=6260, symbol_order=6259)
+
+Partition 0: size 8 align 8
+	ptl
+
+;; Generating RTL for gimple basic block 2
+
+;; Generating RTL for gimple basic block 3
+
+;; Generating RTL for gimple basic block 4
+
+;; Generating RTL for gimple basic block 5
+
+;; Generating RTL for gimple basic block 6
+
+;; Generating RTL for gimple basic block 7
+
+;; Generating RTL for gimple basic block 8
+
+;; Generating RTL for gimple basic block 9
+Selected stringop expansion strategy: libcall
+
+;; Generating RTL for gimple basic block 10
+
+;; Generating RTL for gimple basic block 11
+
+;; Generating RTL for gimple basic block 12
+
+;; Generating RTL for gimple basic block 13
+
+;; Generating RTL for gimple basic block 14
+
+;; Generating RTL for gimple basic block 15
+
+;; Generating RTL for gimple basic block 16
+
+;; Generating RTL for gimple basic block 17
+
+;; Generating RTL for gimple basic block 18
+
+;; Generating RTL for gimple basic block 19
+
+;; Generating RTL for gimple basic block 20
+
+;; Generating RTL for gimple basic block 21
+
+;; Generating RTL for gimple basic block 22
+
+;; Generating RTL for gimple basic block 23
+
+;; Generating RTL for gimple basic block 24
+
+;; Generating RTL for gimple basic block 25
+
+;; Generating RTL for gimple basic block 26
+
+;; Generating RTL for gimple basic block 27
+
+;; Generating RTL for gimple basic block 28
+
+;; Generating RTL for gimple basic block 29
+
+;; Generating RTL for gimple basic block 30
+
+;; Generating RTL for gimple basic block 31
+
+;; Generating RTL for gimple basic block 32
+Edge 22->28 redirected to 39
+
+
+try_optimize_cfg iteration 1
+
+Merging block 3 into block 2...
+Merged blocks 2 and 3.
+Merged 2 and 3 without moving.
+Forwarding edge 5->6 to 8 failed.
+Forwarding edge 19->20 to 23 failed.
+Edge 28->30 redirected to 32
+Merging block 30 into block 29...
+Merged blocks 29 and 30.
+Merged 29 and 30 without moving.
+Forwarding edge 33->34 to 14 failed.
+Forwarding edge 37->38 to 23 failed.
+
+
+try_optimize_cfg iteration 2
+
+Forwarding edge 5->6 to 8 failed.
+Forwarding edge 19->20 to 23 failed.
+Forwarding edge 33->34 to 14 failed.
+Forwarding edge 37->38 to 23 failed.
+
+
+;;
+;; Full RTL generated for this function:
+;;
+(note 1 0 8 NOTE_INSN_DELETED)
+(note 8 1 2 2 [bb 2] NOTE_INSN_BASIC_BLOCK)
+(insn 2 8 3 2 (set (reg/v/f:DI 154 [ pmd ])
+        (reg:DI 5 di [ pmd ])) "mm/mincore.c":103:1 -1
+     (nil))
+(insn 3 2 4 2 (set (reg/v:DI 155 [ addr ])
+        (reg:DI 4 si [ addr ])) "mm/mincore.c":103:1 -1
+     (nil))
+(insn 4 3 5 2 (set (reg/v:DI 156 [ end ])
+        (reg:DI 1 dx [ end ])) "mm/mincore.c":103:1 -1
+     (nil))
+(insn 5 4 6 2 (set (reg/v/f:DI 157 [ walk ])
+        (reg:DI 2 cx [ walk ])) "mm/mincore.c":103:1 -1
+     (nil))
+(note 6 5 10 2 NOTE_INSN_FUNCTION_BEG)
+(insn 10 6 11 2 (set (reg/f:DI 98 [ _1 ])
+        (const_int 0 [0])) "mm/mincore.c":104:14 -1
+     (nil))
+(insn 11 10 12 2 (set (mem/f/c:DI (plus:DI (reg/f:DI 93 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [80 ptl+0 S8 A64])
+        (reg/f:DI 98 [ _1 ])) "mm/mincore.c":104:14 discrim 1 -1
+     (nil))
+(insn 12 11 13 2 (set (reg/v/f:DI 116 [ vma ])
+        (mem/f:DI (plus:DI (reg/v/f:DI 157 [ walk ])
+                (const_int 24 [0x18])) [84 walk_32(D)->vma+0 S8 A64])) "mm/mincore.c":105:25 -1
+     (nil))
+(insn 13 12 14 2 (set (reg/v/f:DI 122 [ vec ])
+        (mem/f:DI (plus:DI (reg/v/f:DI 157 [ walk ])
+                (const_int 40 [0x28])) [53 walk_32(D)->private+0 S8 A64])) "mm/mincore.c":107:17 -1
+     (nil))
+(insn 14 13 15 2 (parallel [
+            (set (reg:DI 158 [ _2 ])
+                (minus:DI (reg/v:DI 156 [ end ])
+                    (reg/v:DI 155 [ addr ])))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/mincore.c":108:16 -1
+     (nil))
+(insn 15 14 16 2 (parallel [
+            (set (reg:DI 159 [ _3 ])
+                (lshiftrt:DI (reg:DI 158 [ _2 ])
+                    (const_int 12 [0xc])))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/mincore.c":108:24 -1
+     (nil))
+(insn 16 15 17 2 (set (reg/v:SI 117 [ nr ])
+        (subreg:SI (reg:DI 159 [ _3 ]) 0)) "mm/mincore.c":108:6 -1
+     (nil))
+(insn 17 16 18 2 (set (reg:DI 115 [ pmd$pmd ])
+        (mem:DI (reg/v/f:DI 154 [ pmd ]) [12 pmd_38(D)->pmd+0 S8 A64])) -1
+     (nil))
+(insn 18 17 19 2 (parallel [
+            (set (reg:DI 160 [ _80 ])
+                (and:DI (reg:DI 115 [ pmd$pmd ])
+                    (const_int -97 [0xffffffffffffff9f])))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable.h":1065:14 -1
+     (nil))
+(insn 19 18 20 2 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:DI 160 [ _80 ])
+            (const_int 0 [0]))) "./include/linux/huge_mm.h":446:24 discrim 1 -1
+     (nil))
+(jump_insn 20 19 21 2 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 46)
+            (pc))) "./include/linux/huge_mm.h":446:24 discrim 1 -1
+     (int_list:REG_BR_PROB 536870916 (nil))
+ -> 46)
+(note 21 20 22 4 [bb 4] NOTE_INSN_BASIC_BLOCK)
+(insn 22 21 23 4 (parallel [
+            (set (reg:DI 161 [ _81 ])
+                (and:DI (reg:DI 115 [ pmd$pmd ])
+                    (const_int 128 [0x80])))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable_types.h":459:26 discrim 1 -1
+     (nil))
+(insn 23 22 24 4 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:DI 161 [ _81 ])
+            (const_int 0 [0]))) "./arch/x86/include/asm/pgtable_types.h":459:5 discrim 1 -1
+     (nil))
+(jump_insn 24 23 25 4 (set (pc)
+        (if_then_else (ne (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 34)
+            (pc))) "./arch/x86/include/asm/pgtable_types.h":459:5 discrim 1 -1
+     (int_list:REG_BR_PROB 536870916 (nil))
+ -> 34)
+(note 25 24 26 5 [bb 5] NOTE_INSN_BASIC_BLOCK)
+(insn 26 25 27 5 (set (reg:DI 163)
+        (const_int -4503599627366401 [0xfff0000000000fff])) "./arch/x86/include/asm/pgtable_types.h":472:29 discrim 2 -1
+     (nil))
+(insn 27 26 28 5 (parallel [
+            (set (reg:DI 162 [ _74 ])
+                (and:DI (reg:DI 115 [ pmd$pmd ])
+                    (reg:DI 163)))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable_types.h":472:29 discrim 2 -1
+     (nil))
+(insn 28 27 29 5 (parallel [
+            (set (reg:SI 164 [ _42 ])
+                (and:SI (subreg:SI (reg:DI 162 [ _74 ]) 0)
+                    (const_int 385 [0x181])))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable.h":1039:24 discrim 1 -1
+     (nil))
+(insn 29 28 30 5 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:SI 164 [ _42 ])
+            (const_int 0 [0]))) "./include/linux/huge_mm.h":446:24 discrim 4 -1
+     (nil))
+(jump_insn 30 29 33 5 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 51)
+            (pc))) "./include/linux/huge_mm.h":446:24 discrim 4 -1
+     (int_list:REG_BR_PROB 1073741828 (nil))
+ -> 51)
+(note 33 30 31 6 [bb 6] NOTE_INSN_BASIC_BLOCK)
+(jump_insn 31 33 32 6 (set (pc)
+        (label_ref 40)) "./include/linux/huge_mm.h":446:24 discrim 4 -1
+     (nil)
+ -> 40)
+(barrier 32 31 34)
+(code_label 34 32 35 7 32 (nil) [1 uses])
+(note 35 34 36 7 [bb 7] NOTE_INSN_BASIC_BLOCK)
+(insn 36 35 37 7 (set (reg:DI 166)
+        (const_int 144115188075856000 [0x200000000000080])) "./arch/x86/include/asm/pgtable.h":307:23 discrim 1 -1
+     (nil))
+(insn 37 36 38 7 (parallel [
+            (set (reg:DI 165 [ _75 ])
+                (and:DI (reg:DI 115 [ pmd$pmd ])
+                    (reg:DI 166)))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable.h":307:23 discrim 1 -1
+     (nil))
+(insn 38 37 39 7 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:DI 165 [ _75 ])
+            (const_int 128 [0x80]))) "./include/linux/huge_mm.h":453:24 discrim 3 -1
+     (nil))
+(jump_insn 39 38 40 7 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 51)
+            (pc))) "./include/linux/huge_mm.h":453:24 discrim 3 -1
+     (int_list:REG_BR_PROB 603462828 (nil))
+ -> 51)
+(code_label 40 39 41 8 34 (nil) [1 uses])
+(note 41 40 42 8 [bb 8] NOTE_INSN_BASIC_BLOCK)
+(insn 42 41 43 8 (set (reg:DI 168)
+        (const_int 144115188075855872 [0x200000000000000])) "./arch/x86/include/asm/pgtable.h":326:25 discrim 1 -1
+     (nil))
+(insn 43 42 44 8 (parallel [
+            (set (reg:DI 167 [ _76 ])
+                (and:DI (reg:DI 115 [ pmd$pmd ])
+                    (reg:DI 168)))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable.h":326:25 discrim 1 -1
+     (nil))
+(insn 44 43 45 8 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:DI 167 [ _76 ])
+            (const_int 0 [0]))) "./include/linux/huge_mm.h":453:48 discrim 5 -1
+     (nil))
+(jump_insn 45 44 46 8 (set (pc)
+        (if_then_else (ne (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 51)
+            (pc))) "./include/linux/huge_mm.h":453:48 discrim 5 -1
+     (int_list:REG_BR_PROB 1073741828 (nil))
+ -> 51)
+(code_label 46 45 47 9 31 (nil) [1 uses])
+(note 47 46 48 9 [bb 9] NOTE_INSN_BASIC_BLOCK)
+(insn 48 47 49 9 (set (mem/f/c:DI (plus:DI (reg/f:DI 93 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [80 ptl+0 S8 A64])
+        (const_int 0 [0])) "mm/mincore.c":111:6 discrim 1 -1
+     (nil))
+(jump_insn 49 48 50 9 (set (pc)
+        (label_ref 69)) "mm/mincore.c":111:6 discrim 1 -1
+     (nil)
+ -> 69)
+(barrier 50 49 51)
+(code_label 51 50 52 10 33 (nil) [3 uses])
+(note 52 51 53 10 [bb 10] NOTE_INSN_BASIC_BLOCK)
+(insn 53 52 54 10 (set (reg:DI 4 si)
+        (reg/v/f:DI 116 [ vma ])) "./include/linux/huge_mm.h":454:10 -1
+     (nil))
+(insn 54 53 55 10 (set (reg:DI 5 di)
+        (reg/v/f:DI 154 [ pmd ])) "./include/linux/huge_mm.h":454:10 -1
+     (nil))
+(call_insn 55 54 56 10 (set (reg:DI 0 ax)
+        (call (mem:QI (symbol_ref:DI ("__pmd_trans_huge_lock") [flags 0x41]  <function_decl 0x7b011f772500 __pmd_trans_huge_lock>) [0 __pmd_trans_huge_lock S1 A8])
+            (const_int 0 [0]))) "./include/linux/huge_mm.h":454:10 -1
+     (expr_list:REG_CALL_DECL (symbol_ref:DI ("__pmd_trans_huge_lock") [flags 0x41]  <function_decl 0x7b011f772500 __pmd_trans_huge_lock>)
+        (nil))
+    (expr_list:DI (use (reg:DI 5 di))
+        (expr_list:DI (use (reg:DI 4 si))
+            (nil))))
+(insn 56 55 57 10 (set (reg/f:DI 132 [ _77 ])
+        (reg:DI 0 ax)) "./include/linux/huge_mm.h":454:10 -1
+     (nil))
+(insn 57 56 58 10 (set (mem/f/c:DI (plus:DI (reg/f:DI 93 virtual-stack-vars)
+                (const_int -8 [0xfffffffffffffff8])) [80 ptl+0 S8 A64])
+        (reg/f:DI 132 [ _77 ])) "mm/mincore.c":111:6 discrim 1 -1
+     (nil))
+(insn 58 57 59 10 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/f:DI 132 [ _77 ])
+            (const_int 0 [0]))) "mm/mincore.c":112:5 -1
+     (nil))
+(jump_insn 59 58 60 10 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 69)
+            (pc))) "mm/mincore.c":112:5 -1
+     (int_list:REG_BR_PROB 356469020 (nil))
+ -> 69)
+(note 60 59 61 11 [bb 11] NOTE_INSN_BASIC_BLOCK)
+(insn 61 60 62 11 (set (reg:DI 101 [ _5 ])
+        (sign_extend:DI (reg/v:SI 117 [ nr ]))) "mm/mincore.c":113:3 -1
+     (nil))
+(insn 62 61 63 11 (set (reg:DI 1 dx)
+        (reg:DI 101 [ _5 ])) "mm/mincore.c":113:3 -1
+     (nil))
+(insn 63 62 64 11 (set (reg:SI 4 si)
+        (const_int 1 [0x1])) "mm/mincore.c":113:3 -1
+     (nil))
+(insn 64 63 65 11 (set (reg:DI 5 di)
+        (reg/v/f:DI 122 [ vec ])) "mm/mincore.c":113:3 -1
+     (nil))
+(call_insn 65 64 66 11 (set (reg:DI 0 ax)
+        (call (mem:QI (symbol_ref:DI ("memset") [flags 0x41]  <function_decl 0x7b012272d200 memset>) [0 __builtin_memset S1 A8])
+            (const_int 0 [0]))) "mm/mincore.c":113:3 -1
+     (expr_list:REG_CALL_DECL (symbol_ref:DI ("memset") [flags 0x41]  <function_decl 0x7b012272d200 memset>)
+        (expr_list:REG_EH_REGION (const_int 0 [0])
+            (nil)))
+    (expr_list:DI (set (reg:DI 0 ax)
+            (reg:DI 5 di))
+        (expr_list:DI (use (reg:DI 5 di))
+            (expr_list:SI (use (reg:SI 4 si))
+                (expr_list:DI (use (reg:DI 1 dx))
+                    (nil))))))
+(insn 66 65 67 11 (parallel [
+            (asm_operands/v ("") ("") 0 []
+                 []
+                 [] ./include/linux/spinlock.h:391)
+            (clobber (mem:BLK (scratch) [0  A8]))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/spinlock.h":391:2 -1
+     (nil))
+(jump_insn 67 66 68 11 (set (pc)
+        (label_ref 206)) "mm/mincore.c":115:3 -1
+     (nil)
+ -> 206)
+(barrier 68 67 69)
+(code_label 69 68 70 12 35 (nil) [2 uses])
+(note 70 69 71 12 [bb 12] NOTE_INSN_BASIC_BLOCK)
+(insn 71 70 72 12 (parallel [
+            (set (reg:DI 169)
+                (plus:DI (reg/f:DI 93 virtual-stack-vars)
+                    (const_int -8 [0xfffffffffffffff8])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/mm.h":3015:2 -1
+     (nil))
+(insn 72 71 73 12 (set (reg:DI 170)
+        (mem/f:DI (plus:DI (reg/v/f:DI 157 [ walk ])
+                (const_int 8 [0x8])) [46 walk_32(D)->mm+0 S8 A64])) "./include/linux/mm.h":3015:2 -1
+     (nil))
+(insn 73 72 74 12 (set (reg:DI 2 cx)
+        (reg:DI 169)) "./include/linux/mm.h":3015:2 -1
+     (nil))
+(insn 74 73 75 12 (set (reg:DI 1 dx)
+        (reg/v:DI 155 [ addr ])) "./include/linux/mm.h":3015:2 -1
+     (nil))
+(insn 75 74 76 12 (set (reg:DI 4 si)
+        (reg/v/f:DI 154 [ pmd ])) "./include/linux/mm.h":3015:2 -1
+     (nil))
+(insn 76 75 77 12 (set (reg:DI 5 di)
+        (reg:DI 170)) "./include/linux/mm.h":3015:2 -1
+     (nil))
+(call_insn 77 76 78 12 (set (reg:DI 0 ax)
+        (call (mem:QI (symbol_ref:DI ("__pte_offset_map_lock") [flags 0x41]  <function_decl 0x7b011f4c1e00 __pte_offset_map_lock>) [0 __pte_offset_map_lock S1 A8])
+            (const_int 0 [0]))) "./include/linux/mm.h":3015:2 -1
+     (expr_list:REG_CALL_DECL (symbol_ref:DI ("__pte_offset_map_lock") [flags 0x41]  <function_decl 0x7b011f4c1e00 __pte_offset_map_lock>)
+        (nil))
+    (expr_list:DI (use (reg:DI 5 di))
+        (expr_list:DI (use (reg:DI 4 si))
+            (expr_list:DI (use (reg:DI 1 dx))
+                (expr_list:DI (use (reg:DI 2 cx))
+                    (nil))))))
+(insn 78 77 79 12 (set (reg/v/f:DI 123 [ pte ])
+        (reg:DI 0 ax)) "./include/linux/mm.h":3015:2 -1
+     (nil))
+(insn 79 78 80 12 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/v/f:DI 123 [ pte ])
+            (const_int 0 [0]))) "mm/mincore.c":119:5 -1
+     (nil))
+(jump_insn 80 79 81 12 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 90)
+            (pc))) "mm/mincore.c":119:5 -1
+     (int_list:REG_BR_PROB 194239900 (nil))
+ -> 90)
+(note 81 80 82 13 [bb 13] NOTE_INSN_BASIC_BLOCK)
+(insn 82 81 83 13 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/v:DI 156 [ end ])
+            (reg/v:DI 155 [ addr ]))) "mm/mincore.c":123:14 discrim 1 -1
+     (nil))
+(jump_insn 83 82 202 13 (set (pc)
+        (if_then_else (ne (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 95)
+            (pc))) "mm/mincore.c":123:14 discrim 1 -1
+     (int_list:REG_BR_PROB 955630228 (nil))
+ -> 95)
+(code_label 202 83 84 14 49 (nil) [1 uses])
+(note 84 202 85 14 [bb 14] NOTE_INSN_BASIC_BLOCK)
+(insn 85 84 86 14 (parallel [
+            (asm_operands/v ("") ("") 0 []
+                 []
+                 [] ./include/linux/spinlock.h:391)
+            (clobber (mem:BLK (scratch) [0  A8]))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/spinlock.h":391:2 -1
+     (nil))
+(insn 86 85 87 14 (parallel [
+            (asm_operands/v ("") ("") 0 []
+                 []
+                 [] ./include/linux/rcupdate.h:100)
+            (clobber (mem:BLK (scratch) [0  A8]))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/rcupdate.h":100:2 -1
+     (nil))
+(insn 87 86 88 14 (set (reg:DI 101 [ _5 ])
+        (sign_extend:DI (reg/v:SI 117 [ nr ]))) "mm/mincore.c":113:3 -1
+     (nil))
+(jump_insn 88 87 89 14 (set (pc)
+        (label_ref 206)) "./include/linux/pgtable.h":137:1 -1
+     (nil)
+ -> 206)
+(barrier 89 88 90)
+(code_label 90 89 91 15 37 (nil) [1 uses])
+(note 91 90 92 15 [bb 15] NOTE_INSN_BASIC_BLOCK)
+(insn 92 91 93 15 (set (mem:SI (plus:DI (reg/v/f:DI 157 [ walk ])
+                (const_int 32 [0x20])) [3 walk_32(D)->action+0 S4 A64])
+        (const_int 2 [0x2])) "mm/mincore.c":120:16 -1
+     (nil))
+(jump_insn 93 92 94 15 (set (pc)
+        (label_ref 210)) "mm/mincore.c":121:10 -1
+     (nil)
+ -> 210)
+(barrier 94 93 95)
+(code_label 95 94 96 16 38 (nil) [2 uses])
+(note 96 95 97 16 [bb 16] NOTE_INSN_BASIC_BLOCK)
+(insn 97 96 98 16 (set (reg:DI 121 [ SR.85 ])
+        (mem/v:DI (reg/v/f:DI 123 [ pte ]) [0 MEM[(const volatile struct pte_t *)ptep_156]+0 S8 A64])) "./include/linux/pgtable.h":340:9 discrim 2 -1
+     (nil))
+(insn 98 97 99 16 (set (reg/v:DI 133 [ addr ])
+        (reg/v:DI 155 [ addr ])) -1
+     (nil))
+(insn 99 98 100 16 (parallel [
+            (set (reg/v:DI 155 [ addr ])
+                (plus:DI (reg/v:DI 155 [ addr ])
+                    (const_int 4096 [0x1000])))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/mincore.c":129:4 -1
+     (nil))
+(insn 100 99 101 16 (parallel [
+            (set (reg:DI 171 [ _44 ])
+                (and:DI (reg:DI 121 [ SR.85 ])
+                    (const_int -97 [0xffffffffffffff9f])))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable.h":989:19 -1
+     (nil))
+(insn 101 100 102 16 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:DI 171 [ _44 ])
+            (const_int 0 [0]))) "./include/linux/swapops.h":487:23 discrim 1 -1
+     (nil))
+(jump_insn 102 101 103 16 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 132)
+            (pc))) "./include/linux/swapops.h":487:23 discrim 1 -1
+     (int_list:REG_BR_PROB 536870916 (nil))
+ -> 132)
+(note 103 102 104 17 [bb 17] NOTE_INSN_BASIC_BLOCK)
+(insn 104 103 105 17 (set (reg:DI 173)
+        (const_int -4503599627366401 [0xfff0000000000fff])) "./arch/x86/include/asm/pgtable_types.h":487:29 discrim 1 -1
+     (nil))
+(insn 105 104 106 17 (parallel [
+            (set (reg:DI 172 [ _90 ])
+                (and:DI (reg:DI 121 [ SR.85 ])
+                    (reg:DI 173)))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable_types.h":487:29 discrim 1 -1
+     (nil))
+(insn 106 105 107 17 (parallel [
+            (set (reg:SI 174 [ _92 ])
+                (and:SI (subreg:SI (reg:DI 172 [ _90 ]) 0)
+                    (const_int 257 [0x101])))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable.h":1008:22 discrim 1 -1
+     (nil))
+(insn 107 106 108 17 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:SI 174 [ _92 ])
+            (const_int 0 [0]))) "./include/linux/swapops.h":126:24 discrim 4 -1
+     (nil))
+(jump_insn 108 107 109 17 (set (pc)
+        (if_then_else (ne (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 127)
+            (pc))) "./include/linux/swapops.h":126:24 discrim 4 -1
+     (int_list:REG_BR_PROB 536870916 (nil))
+ -> 127)
+(note 109 108 110 18 [bb 18] NOTE_INSN_BASIC_BLOCK)
+(insn 110 109 111 18 (parallel [
+            (set (reg:DI 175 [ _98 ])
+                (and:DI (reg:DI 121 [ SR.85 ])
+                    (const_int 8 [0x8])))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable.h":1566:24 discrim 1 -1
+     (nil))
+(insn 111 110 112 18 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:DI 175 [ _98 ])
+            (const_int 0 [0]))) "./include/linux/swapops.h":74:5 discrim 1 -1
+     (nil))
+(jump_insn 112 111 113 18 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 215)
+            (pc))) "./include/linux/swapops.h":74:5 discrim 1 -1
+     (int_list:REG_BR_PROB 536870916 (nil))
+ -> 215)
+(note 113 112 114 19 [bb 19] NOTE_INSN_BASIC_BLOCK)
+(insn 114 113 115 19 (parallel [
+            (set (reg:DI 141 [ _99 ])
+                (and:DI (reg:DI 121 [ SR.85 ])
+                    (const_int -9 [0xfffffffffffffff7])))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/pgtable.h":383:9 -1
+     (nil))
+(insn 115 114 116 19 (set (reg:DI 176 [ _135 ])
+        (not:DI (reg:DI 141 [ _99 ]))) "./include/linux/swapops.h":139:43 -1
+     (nil))
+(insn 116 115 117 19 (parallel [
+            (set (reg:DI 177 [ _21 ])
+                (ashift:DI (reg:DI 176 [ _135 ])
+                    (const_int 5 [0x5])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":139:43 -1
+     (nil))
+(insn 117 116 118 19 (parallel [
+            (set (reg:DI 178 [ _20 ])
+                (lshiftrt:DI (reg:DI 177 [ _21 ])
+                    (const_int 14 [0xe])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":139:9 -1
+     (nil))
+(insn 118 117 119 19 (parallel [
+            (set (reg:DI 179 [ _25 ])
+                (lshiftrt:DI (reg:DI 141 [ _99 ])
+                    (const_int 59 [0x3b])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":139:9 -1
+     (nil))
+(insn 119 118 120 19 (parallel [
+            (set (reg:DI 180 [ _8 ])
+                (ashift:DI (reg:DI 179 [ _25 ])
+                    (const_int 58 [0x3a])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":90:18 -1
+     (nil))
+(insn 120 119 121 19 (parallel [
+            (set (reg:DI 139 [ prephitmp_94 ])
+                (ior:DI (reg:DI 178 [ _20 ])
+                    (reg:DI 180 [ _8 ])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":90:37 -1
+     (nil))
+(insn 121 120 122 19 (parallel [
+            (set (reg:DI 127 [ prephitmp_68 ])
+                (lshiftrt:DI (reg:DI 139 [ prephitmp_94 ])
+                    (const_int 58 [0x3a])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":100:20 -1
+     (nil))
+(insn 122 121 123 19 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:DI 127 [ prephitmp_68 ])
+            (const_int 31 [0x1f]))) "./include/linux/swapops.h":441:26 discrim 5 -1
+     (nil))
+(jump_insn 123 122 126 19 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 132)
+            (pc))) "./include/linux/swapops.h":441:26 discrim 5 -1
+     (int_list:REG_BR_PROB 730144452 (nil))
+ -> 132)
+(note 126 123 124 20 [bb 20] NOTE_INSN_BASIC_BLOCK)
+(jump_insn 124 126 125 20 (set (pc)
+        (label_ref 141)) "./include/linux/swapops.h":441:26 discrim 5 -1
+     (nil)
+ -> 141)
+(barrier 125 124 127)
+(code_label 127 125 128 21 41 (nil) [1 uses])
+(note 128 127 129 21 [bb 21] NOTE_INSN_BASIC_BLOCK)
+(insn 129 128 130 21 (set (mem:QI (reg/v/f:DI 122 [ vec ]) [0 MEM[(unsigned char *)vec_61]+0 S1 A8])
+        (const_int 1 [0x1])) "mm/mincore.c":141:12 -1
+     (nil))
+(jump_insn 130 129 131 21 (set (pc)
+        (label_ref 196)) -1
+     (nil)
+ -> 196)
+(barrier 131 130 132)
+(code_label 132 131 133 22 40 (nil) [3 uses])
+(note 133 132 134 22 [bb 22] NOTE_INSN_BASIC_BLOCK)
+(insn 134 133 135 22 (set (reg:DI 2 cx)
+        (reg/v/f:DI 122 [ vec ])) "mm/mincore.c":129:4 -1
+     (nil))
+(insn 135 134 136 22 (set (reg:DI 1 dx)
+        (reg/v/f:DI 116 [ vma ])) "mm/mincore.c":129:4 -1
+     (nil))
+(insn 136 135 137 22 (set (reg:DI 4 si)
+        (reg/v:DI 155 [ addr ])) "mm/mincore.c":129:4 -1
+     (nil))
+(insn 137 136 138 22 (set (reg:DI 5 di)
+        (reg/v:DI 133 [ addr ])) "mm/mincore.c":129:4 -1
+     (nil))
+(call_insn 138 137 139 22 (set (reg:SI 0 ax)
+        (call (mem:QI (symbol_ref:DI ("__mincore_unmapped_range") [flags 0x3]  <function_decl 0x7b011e4a0100 __mincore_unmapped_range>) [0 __mincore_unmapped_range S1 A8])
+            (const_int 0 [0]))) "mm/mincore.c":129:4 -1
+     (expr_list:REG_CALL_DECL (symbol_ref:DI ("__mincore_unmapped_range") [flags 0x3]  <function_decl 0x7b011e4a0100 __mincore_unmapped_range>)
+        (expr_list:REG_EH_REGION (const_int 0 [0])
+            (nil)))
+    (expr_list:DI (use (reg:DI 5 di))
+        (expr_list:DI (use (reg:DI 4 si))
+            (expr_list:DI (use (reg:DI 1 dx))
+                (expr_list:DI (use (reg:DI 2 cx))
+                    (nil))))))
+(jump_insn 139 138 140 22 (set (pc)
+        (label_ref 196)) -1
+     (nil)
+ -> 196)
+(barrier 140 139 141)
+(code_label 141 140 142 23 43 (nil) [2 uses])
+(note 142 141 145 23 [bb 23] NOTE_INSN_BASIC_BLOCK)
+(insn 145 142 146 23 (set (reg:CC 17 flags)
+        (compare:CC (reg:DI 127 [ prephitmp_68 ])
+            (const_int 27 [0x1b]))) "mm/mincore.c":145:7 discrim 1 -1
+     (nil))
+(jump_insn 146 145 147 23 (set (pc)
+        (if_then_else (leu (reg:CC 17 flags)
+                (const_int 0 [0]))
+            (label_ref 151)
+            (pc))) "mm/mincore.c":145:7 discrim 1 -1
+     (int_list:REG_BR_PROB 354334804 (nil))
+ -> 151)
+(note 147 146 148 24 [bb 24] NOTE_INSN_BASIC_BLOCK)
+(insn 148 147 149 24 (set (mem:QI (reg/v/f:DI 122 [ vec ]) [0 MEM[(unsigned char *)vec_61]+0 S1 A8])
+        (const_int 1 [0x1])) "mm/mincore.c":150:10 -1
+     (nil))
+(jump_insn 149 148 150 24 (set (pc)
+        (label_ref 196)) -1
+     (nil)
+ -> 196)
+(barrier 150 149 151)
+(code_label 151 150 152 25 45 (nil) [1 uses])
+(note 152 151 153 25 [bb 25] NOTE_INSN_BASIC_BLOCK)
+(insn 153 152 154 25 (parallel [
+            (set (reg:DI 181 [ _65 ])
+                (and:DI (reg:DI 139 [ prephitmp_94 ])
+                    (const_int 16383 [0x3fff])))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/swap.h":50:27 discrim 1 -1
+     (nil))
+(insn 154 153 155 25 (set (reg/f:DI 182)
+        (symbol_ref:DI ("swapper_spaces") [flags 0x40]  <var_decl 0x7b011e75c130 swapper_spaces>)) "mm/mincore.c":153:25 discrim 2 -1
+     (nil))
+(insn 155 154 156 25 (set (reg:DI 183)
+        (zero_extend:DI (subreg:SI (reg:DI 127 [ prephitmp_68 ]) 0))) "mm/mincore.c":153:25 discrim 2 -1
+     (nil))
+(insn 156 155 157 25 (parallel [
+            (set (reg:DI 184 [ _63 ])
+                (lshiftrt:DI (reg:DI 139 [ prephitmp_94 ])
+                    (const_int 14 [0xe])))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/mincore.c":153:25 discrim 3 -1
+     (nil))
+(insn 157 156 158 25 (set (reg:DI 186)
+        (const_int 17592186044415 [0xfffffffffff])) "mm/mincore.c":153:25 discrim 3 -1
+     (nil))
+(insn 158 157 159 25 (parallel [
+            (set (reg:DI 185 [ _13 ])
+                (and:DI (reg:DI 184 [ _63 ])
+                    (reg:DI 186)))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/mincore.c":153:25 discrim 3 -1
+     (nil))
+(insn 159 158 160 25 (parallel [
+            (set (reg:DI 187 [ _14 ])
+                (mult:DI (reg:DI 185 [ _13 ])
+                    (const_int 176 [0xb0])))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/mincore.c":153:25 discrim 3 -1
+     (nil))
+(insn 160 159 161 25 (set (reg/f:DI 189)
+        (mem/f:DI (plus:DI (mult:DI (reg:DI 183)
+                    (const_int 8 [0x8]))
+                (reg/f:DI 182)) [62 swapper_spaces[_64]+0 S8 A64])) "mm/mincore.c":153:12 discrim 3 -1
+     (nil))
+(insn 161 160 162 25 (parallel [
+            (set (reg:DI 188 [ _15 ])
+                (plus:DI (reg:DI 187 [ _14 ])
+                    (reg/f:DI 189)))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/mincore.c":153:12 discrim 3 -1
+     (expr_list:REG_EQUAL (plus:DI (mem/f:DI (plus:DI (mult:DI (reg:DI 183)
+                        (const_int 8 [0x8]))
+                    (reg/f:DI 182)) [62 swapper_spaces[_64]+0 S8 A64])
+            (reg:DI 187 [ _14 ]))
+        (nil)))
+(insn 162 161 163 25 (set (reg:DI 4 si)
+        (reg:DI 181 [ _65 ])) "mm/mincore.c":64:10 -1
+     (nil))
+(insn 163 162 164 25 (set (reg:DI 5 di)
+        (reg:DI 188 [ _15 ])) "mm/mincore.c":64:10 -1
+     (nil))
+(call_insn 164 163 165 25 (set (reg:DI 0 ax)
+        (call (mem:QI (symbol_ref:DI ("filemap_get_incore_folio") [flags 0x41]  <function_decl 0x7b011e765a00 filemap_get_incore_folio>) [0 filemap_get_incore_folio S1 A8])
+            (const_int 0 [0]))) "mm/mincore.c":64:10 -1
+     (expr_list:REG_CALL_DECL (symbol_ref:DI ("filemap_get_incore_folio") [flags 0x41]  <function_decl 0x7b011e765a00 filemap_get_incore_folio>)
+        (nil))
+    (expr_list:DI (use (reg:DI 5 di))
+        (expr_list:DI (use (reg:DI 4 si))
+            (nil))))
+(insn 165 164 168 25 (set (reg/v/f:DI 142 [ folio ])
+        (reg:DI 0 ax)) "mm/mincore.c":64:10 -1
+     (nil))
+(insn 168 165 169 25 (set (reg:CC 17 flags)
+        (compare:CC (reg/v/f:DI 142 [ folio ])
+            (const_int -4096 [0xfffffffffffff000]))) "mm/mincore.c":65:5 discrim 1 -1
+     (nil))
+(jump_insn 169 168 170 25 (set (pc)
+        (if_then_else (gtu (reg:CC 17 flags)
+                (const_int 0 [0]))
+            (label_ref:DI 236)
+            (pc))) "mm/mincore.c":65:5 discrim 1 1458 {*jcc}
+     (int_list:REG_BR_PROB 107374188 (nil))
+ -> 236)
+(note 170 169 171 26 [bb 26] NOTE_INSN_BASIC_BLOCK)
+(insn 171 170 172 26 (set (reg:DI 144 [ _122 ])
+        (mem/v:DI (reg/v/f:DI 142 [ folio ]) [12 MEM[(const volatile long unsigned int *)folio_117]+0 S8 A64])) "./arch/x86/include/asm/bitops.h":206:8 -1
+     (nil))
+(insn 172 171 173 26 (parallel [
+            (set (reg:DI 190 [ _123 ])
+                (lshiftrt:DI (reg:DI 144 [ _122 ])
+                    (const_int 3 [0x3])))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/bitops.h":206:37 -1
+     (nil))
+(insn 173 172 174 26 (set (reg:QI 146 [ _124 ])
+        (subreg:QI (reg:DI 190 [ _123 ]) 0)) "./arch/x86/include/asm/bitops.h":206:37 -1
+     (nil))
+(insn 174 173 175 26 (parallel [
+            (set (reg:QI 146 [ _124 ])
+                (and:QI (reg:QI 146 [ _124 ])
+                    (const_int 1 [0x1])))
+            (clobber (reg:CC 17 flags))
+        ]) "./arch/x86/include/asm/bitops.h":206:37 -1
+     (nil))
+(insn 175 174 176 26 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:QI 146 [ _124 ])
+            (const_int 0 [0]))) "./include/linux/page-flags.h":817:5 -1
+     (nil))
+(jump_insn 176 175 177 26 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 179)
+            (pc))) "./include/linux/page-flags.h":817:5 -1
+     (int_list:REG_BR_PROB 536870916 (nil))
+ -> 179)
+(note 177 176 178 27 [bb 27] NOTE_INSN_BASIC_BLOCK)
+(insn 178 177 179 27 (parallel [
+            (asm_operands/v ("") ("") 0 []
+                 []
+                 [] ./include/linux/page-flags.h:818)
+            (clobber (mem:BLK (scratch) [0  A8]))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/page-flags.h":818:3 -1
+     (nil))
+(code_label 179 178 180 28 47 (nil) [1 uses])
+(note 180 179 181 28 [bb 28] NOTE_INSN_BASIC_BLOCK)
+(insn 181 180 182 28 (set (reg/v:QI 147 [ present ])
+        (reg:QI 146 [ _124 ])) "mm/mincore.c":66:11 discrim 1 -1
+     (nil))
+(insn 182 181 185 28 (parallel [
+            (set (reg/f:DI 148 [ _126 ])
+                (plus:DI (reg/v/f:DI 142 [ folio ])
+                    (const_int 52 [0x34])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/page_ref.h":205:12 -1
+     (nil))
+(insn 185 182 184 28 (parallel [
+            (set (mem:SI (reg/f:DI 148 [ _126 ]) [3 _126->counter+0 S4 A32])
+                (asm_operands/v:SI ("decl %0
+	/* output condition code e*/
+") ("=m") 0 [
+                        (mem:SI (reg/f:DI 148 [ _126 ]) [3 _126->counter+0 S4 A32])
+                    ]
+                     [
+                        (asm_input:SI ("m") ./arch/x86/include/asm/atomic.h:67)
+                    ]
+                     [] ./arch/x86/include/asm/atomic.h:67))
+            (set (reg:CC 17 flags)
+                (asm_operands/v:CC ("decl %0
+	/* output condition code e*/
+") ("=Bf") 1 [
+                        (mem:SI (reg/f:DI 148 [ _126 ]) [3 _126->counter+0 S4 A32])
+                    ]
+                     [
+                        (asm_input:SI ("m") ./arch/x86/include/asm/atomic.h:67)
+                    ]
+                     [] ./arch/x86/include/asm/atomic.h:67))
+            (clobber (mem:BLK (scratch) [0  A8]))
+        ]) "./arch/x86/include/asm/atomic.h":67:9 discrim 1 -1
+     (nil))
+(insn 184 185 183 28 (set (reg:QI 191 [ c ])
+        (eq:QI (reg:CCZ 17 flags)
+            (const_int 0 [0]))) "./arch/x86/include/asm/atomic.h":67:9 discrim 1 -1
+     (nil))
+(insn 183 184 186 28 (set (reg/v:QI 149 [ c ])
+        (reg:QI 191 [ c ])) "./arch/x86/include/asm/atomic.h":67:9 discrim 1 -1
+     (nil))
+(insn 186 183 187 28 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/v:QI 149 [ c ])
+            (const_int 0 [0]))) "./include/linux/mm.h":1355:5 discrim 1 -1
+     (nil))
+(jump_insn 187 186 188 28 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref:DI 193)
+            (pc))) "./include/linux/mm.h":1355:5 discrim 1 1458 {*jcc}
+     (int_list:REG_BR_PROB 719407028 (nil))
+ -> 193)
+(note 188 187 189 29 [bb 29] NOTE_INSN_BASIC_BLOCK)
+(insn 189 188 190 29 (set (reg:DI 5 di)
+        (reg/v/f:DI 142 [ folio ])) "./include/linux/mm.h":1356:3 -1
+     (nil))
+(call_insn 190 189 233 29 (call (mem:QI (symbol_ref:DI ("__folio_put") [flags 0x41]  <function_decl 0x7b011f792600 __folio_put>) [0 __folio_put S1 A8])
+        (const_int 0 [0])) "./include/linux/mm.h":1356:3 -1
+     (expr_list:REG_CALL_DECL (symbol_ref:DI ("__folio_put") [flags 0x41]  <function_decl 0x7b011f792600 __folio_put>)
+        (nil))
+    (expr_list:DI (use (reg:DI 5 di))
+        (nil)))
+(jump_insn 233 190 234 29 (set (pc)
+        (label_ref 193)) -1
+     (nil)
+ -> 193)
+(barrier 234 233 236)
+(code_label 236 234 235 31 50 (nil) [1 uses])
+(note 235 236 7 31 [bb 31] NOTE_INSN_BASIC_BLOCK)
+(insn 7 235 193 31 (set (reg/v:QI 147 [ present ])
+        (const_int 0 [0])) "mm/mincore.c":55:16 -1
+     (nil))
+(code_label 193 7 194 32 46 (nil) [2 uses])
+(note 194 193 195 32 [bb 32] NOTE_INSN_BASIC_BLOCK)
+(insn 195 194 196 32 (set (mem:QI (reg/v/f:DI 122 [ vec ]) [0 MEM[(unsigned char *)vec_61]+0 S1 A8])
+        (reg/v:QI 147 [ present ])) "mm/mincore.c":153:10 discrim 4 -1
+     (nil))
+(code_label 196 195 197 33 44 (nil) [3 uses])
+(note 197 196 198 33 [bb 33] NOTE_INSN_BASIC_BLOCK)
+(insn 198 197 199 33 (parallel [
+            (set (reg/v/f:DI 122 [ vec ])
+                (plus:DI (reg/v/f:DI 122 [ vec ])
+                    (const_int 1 [0x1])))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/mincore.c":161:7 -1
+     (nil))
+(insn 199 198 200 33 (parallel [
+            (set (reg/v/f:DI 123 [ pte ])
+                (plus:DI (reg/v/f:DI 123 [ pte ])
+                    (const_int 8 [0x8])))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/mincore.c":123:27 -1
+     (nil))
+(insn 200 199 201 33 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg/v:DI 156 [ end ])
+            (reg/v:DI 155 [ addr ]))) "mm/mincore.c":123:14 discrim 1 -1
+     (nil))
+(jump_insn 201 200 205 33 (set (pc)
+        (if_then_else (ne (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 95)
+            (pc))) "mm/mincore.c":123:14 discrim 1 -1
+     (int_list:REG_BR_PROB 955630228 (nil))
+ -> 95)
+(note 205 201 203 34 [bb 34] NOTE_INSN_BASIC_BLOCK)
+(jump_insn 203 205 204 34 (set (pc)
+        (label_ref 202)) -1
+     (nil)
+ -> 202)
+(barrier 204 203 206)
+(code_label 206 204 207 35 36 ("out") [2 uses])
+(note 207 206 208 35 [bb 35] NOTE_INSN_BASIC_BLOCK)
+(insn 208 207 209 35 (parallel [
+            (set (mem/f:DI (plus:DI (reg/v/f:DI 157 [ walk ])
+                        (const_int 40 [0x28])) [53 walk_32(D)->private+0 S8 A64])
+                (plus:DI (mem/f:DI (plus:DI (reg/v/f:DI 157 [ walk ])
+                            (const_int 40 [0x28])) [53 walk_32(D)->private+0 S8 A64])
+                    (reg:DI 101 [ _5 ])))
+            (clobber (reg:CC 17 flags))
+        ]) "mm/mincore.c":165:16 -1
+     (nil))
+(call_insn 209 208 210 35 (set (reg:SI 0 ax)
+        (call (mem:QI (symbol_ref:DI ("__cond_resched") [flags 0x41]  <function_decl 0x7b012155d000 __cond_resched>) [0 __cond_resched S1 A8])
+            (const_int 0 [0]))) "./include/linux/sched.h":2109:9 -1
+     (expr_list:REG_CALL_DECL (symbol_ref:DI ("__cond_resched") [flags 0x41]  <function_decl 0x7b012155d000 __cond_resched>)
+        (nil))
+    (nil))
+(code_label 210 209 211 36 39 (nil) [1 uses])
+(note 211 210 212 36 [bb 36] NOTE_INSN_BASIC_BLOCK)
+(insn 212 211 213 36 (set (reg:SI 153 [ <retval> ])
+        (const_int 0 [0])) "mm/mincore.c":168:1 -1
+     (nil))
+(jump_insn 213 212 214 36 (set (pc)
+        (label_ref 229)) "mm/mincore.c":168:1 -1
+     (nil)
+ -> 229)
+(barrier 214 213 215)
+(code_label 215 214 216 37 42 (nil) [1 uses])
+(note 216 215 217 37 [bb 37] NOTE_INSN_BASIC_BLOCK)
+(insn 217 216 218 37 (set (reg:DI 193 [ _142 ])
+        (not:DI (reg:DI 121 [ SR.85 ]))) "./include/linux/swapops.h":139:43 -1
+     (nil))
+(insn 218 217 219 37 (parallel [
+            (set (reg:DI 194 [ _143 ])
+                (ashift:DI (reg:DI 193 [ _142 ])
+                    (const_int 5 [0x5])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":139:43 -1
+     (nil))
+(insn 219 218 220 37 (parallel [
+            (set (reg:DI 195 [ _9 ])
+                (lshiftrt:DI (reg:DI 194 [ _143 ])
+                    (const_int 14 [0xe])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":139:9 -1
+     (nil))
+(insn 220 219 221 37 (parallel [
+            (set (reg:DI 196 [ _41 ])
+                (lshiftrt:DI (reg:DI 121 [ SR.85 ])
+                    (const_int 59 [0x3b])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":139:9 -1
+     (nil))
+(insn 221 220 222 37 (parallel [
+            (set (reg:DI 197 [ _11 ])
+                (ashift:DI (reg:DI 196 [ _41 ])
+                    (const_int 58 [0x3a])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":90:18 -1
+     (nil))
+(insn 222 221 223 37 (parallel [
+            (set (reg:DI 139 [ prephitmp_94 ])
+                (ior:DI (reg:DI 195 [ _9 ])
+                    (reg:DI 197 [ _11 ])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":90:37 -1
+     (nil))
+(insn 223 222 224 37 (parallel [
+            (set (reg:DI 127 [ prephitmp_68 ])
+                (lshiftrt:DI (reg:DI 139 [ prephitmp_94 ])
+                    (const_int 58 [0x3a])))
+            (clobber (reg:CC 17 flags))
+        ]) "./include/linux/swapops.h":100:20 -1
+     (nil))
+(insn 224 223 225 37 (set (reg:CCZ 17 flags)
+        (compare:CCZ (reg:DI 127 [ prephitmp_68 ])
+            (const_int 31 [0x1f]))) "./include/linux/swapops.h":441:26 discrim 5 -1
+     (nil))
+(jump_insn 225 224 228 37 (set (pc)
+        (if_then_else (eq (reg:CCZ 17 flags)
+                (const_int 0 [0]))
+            (label_ref 132)
+            (pc))) "./include/linux/swapops.h":441:26 discrim 5 -1
+     (int_list:REG_BR_PROB 4 (nil))
+ -> 132)
+(note 228 225 226 38 [bb 38] NOTE_INSN_BASIC_BLOCK)
+(jump_insn 226 228 227 38 (set (pc)
+        (label_ref 141)) "./include/linux/swapops.h":441:26 discrim 5 -1
+     (nil)
+ -> 141)
+(barrier 227 226 229)
+(code_label 229 227 232 39 30 (nil) [1 uses])
+(note 232 229 230 39 [bb 39] NOTE_INSN_BASIC_BLOCK)
+(insn 230 232 231 39 (set (reg/i:SI 0 ax)
+        (reg:SI 153 [ <retval> ])) "mm/mincore.c":168:1 -1
+     (nil))
+(insn 231 230 0 39 (use (reg/i:SI 0 ax)) "mm/mincore.c":168:1 -1
+     (nil))
+

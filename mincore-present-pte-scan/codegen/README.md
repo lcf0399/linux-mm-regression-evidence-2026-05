@@ -106,6 +106,19 @@ GCC 15.2 also behaves like GCC 13.3 for this check: v6.16 original still does
 not optimize back to the old x86 base-page shape, while the small `batch <= 1`
 fastpath and the nobatch variant are byte-identical.
 
+Focused GCC 15.2 dump snippets were also saved for `mincore_pte_range()`:
+
+| variant | optimized lines | RTL expand lines | objdump lines | objdump jumps |
+| --- | ---: | ---: | ---: | ---: |
+| `gcc15_v6.16_original` | 321 | 993 | 146 | 25 |
+| `gcc15_v6.16_fastpath` | 299 | 921 | 136 | 23 |
+| `gcc15_v6.16_nobatch` | 299 | 921 | 136 | 23 |
+
+The final fastpath and nobatch objdump files are byte-identical. Their
+optimized dumps differ only in mechanical SSA/source-line naming. By contrast,
+the original build is already larger at the optimized and RTL-expand stages,
+before final assembly.
+
 ## Clang 18.1.3
 
 Compiler:
@@ -156,6 +169,31 @@ after calling `pte_batch_hint()`.  In the GCC output, the present-PTE single
 page case is split into a later block that stores `1` and jumps back to a common
 advance block.  The nobatch and local `batch <= 1` fastpath builds produce a
 more compact hot path and are byte-identical to each other.
+
+The objdump hot-path shape is:
+
+```text
+GCC15 v6.16 original:
+  ... test present bits
+  jne  <later present-store block>
+  ...
+  common advance:
+    add vec
+    add ptep
+    cmp end
+    jne loop
+  later present-store block:
+    movb $0x1,(vec)
+    jmp common advance
+
+GCC15 v6.16 nobatch / batch<=1 fastpath:
+  present-store block:
+    movb $0x1,(vec)
+    add vec
+    add ptep
+    cmp end
+    ...
+```
 
 ## Interpretation
 
