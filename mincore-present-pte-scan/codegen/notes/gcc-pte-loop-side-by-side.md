@@ -10,17 +10,17 @@ here.
 The compared files are:
 
 ```text
-gcc13_v6.16_original.mincore_pte_range.objdump.txt
-gcc13_v6.16_fastpath.mincore_pte_range.objdump.txt
-gcc13_v6.16_nobatch.mincore_pte_range.objdump.txt
+gcc13/gcc13_v6.16_original.mincore_pte_range.objdump.txt
+gcc13/gcc13_v6.16_fastpath.mincore_pte_range.objdump.txt
+gcc13/gcc13_v6.16_nobatch.mincore_pte_range.objdump.txt
 
-gcc14_v6.16_original.mincore_pte_range.objdump.txt
-gcc14_v6.16_fastpath.mincore_pte_range.objdump.txt
-gcc14_v6.16_nobatch.mincore_pte_range.objdump.txt
+gcc14/gcc14_v6.16_original.mincore_pte_range.objdump.txt
+gcc14/gcc14_v6.16_fastpath.mincore_pte_range.objdump.txt
+gcc14/gcc14_v6.16_nobatch.mincore_pte_range.objdump.txt
 
-gcc15_v6.16_original.mincore_pte_range.objdump.txt
-gcc15_v6.16_fastpath.mincore_pte_range.objdump.txt
-gcc15_v6.16_nobatch.mincore_pte_range.objdump.txt
+gcc15/gcc15_v6.16_original.mincore_pte_range.objdump.txt
+gcc15/gcc15_v6.16_fastpath.mincore_pte_range.objdump.txt
+gcc15/gcc15_v6.16_nobatch.mincore_pte_range.objdump.txt
 ```
 
 For each GCC version, the `fastpath` and `nobatch` objdump files are

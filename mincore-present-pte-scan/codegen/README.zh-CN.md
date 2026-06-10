@@ -24,6 +24,16 @@ objdump -dr --no-show-raw-insn mm/mincore.o
 nm -S --defined-only mm/mincore.o
 ```
 
+目录结构：
+
+```text
+gcc13/   GCC 13.3 nm/objdump artifacts
+gcc14/   GCC 14.2 nm/objdump artifacts
+gcc15/   GCC 15.2 nm/objdump 和 focused GCC dump snippets
+clang18/ Clang 18.1.3 nm/objdump artifacts
+notes/   side-by-side layout 和 always-inline 检查说明
+```
+
 相关 config 形状：
 
 ```text
@@ -42,6 +52,8 @@ Compiler：
 gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
 GNU ld (GNU Binutils for Ubuntu) 2.42
 ```
+
+Artifacts 放在 `gcc13/`。
 
 `nm -S` 中 `mincore_pte_range` 的 size：
 
@@ -67,6 +79,8 @@ GNU ld (GNU Binutils for Ubuntu) 2.42
 
 这轮 GCC 14.2 是用 deb 包本地解包运行的，没有安装系统 package。
 
+Artifacts 放在 `gcc14/`。
+
 `nm -S` 中 `mincore_pte_range` 的 size：
 
 | variant | size | objdump relation |
@@ -89,6 +103,8 @@ GNU ld (GNU Binutils for Ubuntu) 2.42
 ```
 
 这轮 GCC 15.2 是用 deb 包本地解包运行的，没有安装系统 package。
+
+Artifacts 放在 `gcc15/`。
 
 `nm -S` 中 `mincore_pte_range` 的 size：
 
@@ -122,6 +138,8 @@ Compiler：
 Ubuntu clang version 18.1.3 (1ubuntu1)
 GNU ld (GNU Binutils for Ubuntu) 2.42
 ```
+
+Artifacts 放在 `clang18/`。
 
 `nm -S` 中 `mincore_pte_range` 的 size：
 
@@ -187,7 +205,7 @@ GCC15 v6.16 nobatch / batch<=1 fastpath:
     ...
 ```
 
-`gcc-pte-loop-side-by-side.md` 里另外按 GCC 13.3、GCC 14.2 和 GCC 15.2
+`notes/gcc-pte-loop-side-by-side.md` 里另外按 GCC 13.3、GCC 14.2 和 GCC 15.2
 整理了一份短的 basic-block 对齐说明。
 
 ## Pedro 的 always-inline 建议
@@ -195,7 +213,7 @@ GCC15 v6.16 nobatch / batch<=1 fastpath:
 Pedro 建议测试把默认 x86 `pte_batch_hint()` helper 强制成 `__always_inline` 是否会改变
 generated code。在这个 setup 下没有改变：GCC 13.3、GCC 14.2 和 GCC 15.2 生成的
 `mincore_pte_range()` normalized function objdump 都和 v6.16 original 相同。见
-`gcc-always-inline-test.md`。
+`notes/gcc-always-inline-test.md`。
 
 ## 解释
 
