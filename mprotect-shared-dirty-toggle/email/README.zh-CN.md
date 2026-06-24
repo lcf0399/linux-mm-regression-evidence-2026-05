@@ -12,8 +12,7 @@
 
 发送新邮件前需要：
 
-- push 当前 evidence bundle。
-- 把英文草稿里的 `FIXME` 替换成固定 GitHub commit URL。
+- 当前 evidence bundle 已 push，英文草稿里的证据链接已替换成固定 GitHub commit URL。
 - 再次确认 `scripts/get_maintainer.pl --no-rolestats -f mm/mprotect.c` 的收件人没有变化。
 
 当前真机复跑、release-window narrowing 和 attribution probe 结论以 `bare-metal/`
